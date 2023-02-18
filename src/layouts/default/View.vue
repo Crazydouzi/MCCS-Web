@@ -1,9 +1,6 @@
 <template>
-  <v-main>
-    <router-view />
-  </v-main>
+  <v-main mini-variant.sync>
+      <router-view />
+</v-main>
 </template>
 
-<script lang="ts" setup>
-  //
-</script>
