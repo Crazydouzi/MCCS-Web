@@ -1,6 +1,5 @@
 <template>
-  <v-navigation-drawer app :model-value="store.isDrawer" mini-variant.sync color="red">
-    <v-divider></v-divider>
+  <v-navigation-drawer app :model-value="store.isDrawer"  color="red">
     <v-list density="compact" nav>
       <v-list-item prepend-icon="mdi-view-dashboard" title="Home" value="home"></v-list-item>
       <v-list-item prepend-icon="mdi-forum" title="About" value="about"></v-list-item>
