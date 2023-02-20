@@ -5,10 +5,10 @@ const routes = [
   {
     path: '/',
     component: () => import('@/layouts/default/Default.vue'),
-    beforeEnter: (to:any, from:any, next:any) => {
-      if (to.name !== 'Login' && !sessionStorage.getItem('user-sessionToken')) next({ name: 'Login' })
-      else next()
-  },
+    // beforeEnter: (to: any, from: any, next: any) => {
+    //   if (to.name !== 'Login' && !sessionStorage.getItem('user-sessionToken')) next({ name: 'Login' })
+    //   else next()
+    // },
     children: [
       {
         path: '',
@@ -19,12 +19,12 @@ const routes = [
         component: () => import(/* webpackChunkName: "home" */ '@/views/Home.vue'),
       },
       {
-        path:'/account/login',
-        name:'Login',
-        component:()=> import('@/views/account/login.vue')
+        path: '/account/login',
+        name: 'Login',
+        component: () => import('@/views/account/login.vue')
       }
 
-      ],
+    ],
   },
 
 ]
