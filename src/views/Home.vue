@@ -92,9 +92,15 @@ interface MemoryInterface{
   memUse:string;
   jvmMemUse:number;
 }
+interface CPUInfoInterface{
+  cpuUsage:number;
+  cpuWaitPer:string;
+  cpuSysUsage:string;
+  cpuUserUsage:string;
+}
 let cpuCoreCount="8核心/16线程";
-let memInfo = reactive({data:{ memUsage: 0, memTotal: "0", memUse: "0", memFree: "" ,jvmMemUse:0}})
-let cpuInfo = reactive({data:{ cpuUsage: 0, cpuWaitPer: "0%", cpuSysUsage: "", cpuUserUsage: "" }})
+let memInfo = reactive({data:<MemoryInterface>{}})
+let cpuInfo = reactive({data:<CPUInfoInterface>{}})
 const headers:object={
   'Content-Type':'application/json'
 }
