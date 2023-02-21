@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-row >
+    <v-row>
       <v-col md="12" sm="12" xs="12" lg="6">
         <v-card>
           <v-card-title>处理器</v-card-title>
@@ -78,6 +78,35 @@
     <v-card class="mt-5">
       <v-card-title>系统信息</v-card-title>
       <v-divider></v-divider>
+      <v-row>
+        <v-col md="4" sm="12" xs="12" lg="4">
+          <v-list>
+            <v-list-item>主机名：
+              <p>DESKTOP-66VGV3I</p>
+            </v-list-item>
+            <v-list-item>主机地址：
+              <p>10.20.229.211</p>
+            </v-list-item>
+          </v-list>
+        </v-col>
+
+        <v-col md="4" sm="12" xs="12" lg="4">
+          <v-list>
+            <v-list-item>CPU型号：<p>AMD Ryzen 9 5900HS with Radeon Graphics</p></v-list-item>
+            <v-list-item>CPU核心数：<p>8核心/16线程</p></v-list-item>
+
+            <v-list-item>内存总数：<p>23.4 GiB</p></v-list-item>
+
+          </v-list>
+        </v-col>
+        <v-col md="4" sm="12" xs="12" lg="4">
+          <v-list>
+            <v-list-item>系统类型：<p>Windows</p></v-list-item>
+            <v-list-item>系统版本：<p>Windows11 build 22623</p></v-list-item>
+            <v-list-item>java版本(系统)：<p>1.8.0_201</p></v-list-item>
+          </v-list>
+        </v-col>
+      </v-row>
     </v-card>
   </v-container>
 </template>
@@ -85,40 +114,38 @@
 <script lang="ts" setup>
 import { ref, reactive } from 'vue';
 import axios from 'axios';
-interface MemoryInterface{
-  memTotal:string;
-  memFree:string;
-  memUsage:number;
-  memUse:string;
-  jvmMemUse:number;
+interface MemoryInterface {
+  memTotal: string;
+  memFree: string;
+  memUsage: number;
+  memUse: string;
+  jvmMemUse: number;
 }
-interface CPUInfoInterface{
-  cpuUsage:number;
-  cpuWaitPer:string;
-  cpuSysUsage:string;
-  cpuUserUsage:string;
+interface CPUInfoInterface {
+  cpuUsage: number;
+  cpuWaitPer: string;
+  cpuSysUsage: string;
+  cpuUserUsage: string;
 }
-let cpuCoreCount="8核心/16线程";
-let memInfo = reactive({data:<MemoryInterface>{}})
-let cpuInfo = reactive({data:<CPUInfoInterface>{}})
-const headers:object={
-  'Content-Type':'application/json'
+let cpuCoreCount = "8核心/16线程";
+let memInfo = reactive({ data: <MemoryInterface>{} })
+let cpuInfo = reactive({ data: <CPUInfoInterface>{} })
+const headers: object = {
+  'Content-Type': 'application/json'
 }
-setInterval(()=>{
+setInterval(() => {
   getUsageInfo();
-},7000)
+}, 7000)
 
-function getUsageInfo(){
-  axios.post("http://localhost:8080/api/system/getCpuUsage",headers).then(r=>{
-    cpuInfo.data=r.data.data
-})
-  axios.post("http://localhost:8080/api/system/getMemUsage",headers).then(r=>{
-    let data:MemoryInterface=r.data.data
-    memInfo.data=data
+function getUsageInfo() {
+  axios.post("http://localhost:8080/api/system/getCpuUsage", headers).then(r => {
+    cpuInfo.data = r.data.data
+  })
+  axios.post("http://localhost:8080/api/system/getMemUsage", headers).then(r => {
+    let data: MemoryInterface = r.data.data
+    memInfo.data = data
   })
 }
-function getSystemInfo(){}
+function getSystemInfo() { }
 </script>
-<style>
-
-</style>
+<style></style>
