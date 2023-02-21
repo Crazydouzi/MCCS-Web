@@ -94,9 +94,7 @@
           <v-list>
             <v-list-item>CPU型号：<p>AMD Ryzen 9 5900HS with Radeon Graphics</p></v-list-item>
             <v-list-item>CPU核心数：<p>8核心/16线程</p></v-list-item>
-
             <v-list-item>内存总数：<p>23.4 GiB</p></v-list-item>
-
           </v-list>
         </v-col>
         <v-col md="4" sm="12" xs="12" lg="4">
