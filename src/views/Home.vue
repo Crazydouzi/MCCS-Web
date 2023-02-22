@@ -19,7 +19,7 @@
             <!-- 信息 -->
             <v-card flat>
               <v-card-title class="headline font-weight-bold">
-                核心数： {{ "8核心/16线程" }}
+                核心数： {{ systemInfo.data.cpuCoreCount }}
               </v-card-title>
               <v-list flat>
                 <v-list-item>
@@ -55,7 +55,7 @@
             <!-- 信息 -->
             <v-card flat>
               <v-card-title class="headline font-weight-bold">
-                占比： {{ memInfo.data.memFree + " / " + memInfo.data.memTotal }}
+                占比： {{ memInfo.data.memFree }} / {{ memInfo.data.memTotal }}
               </v-card-title>
               <v-list flat>
                 <v-list-item>
@@ -79,29 +79,30 @@
       <v-card-title>系统信息</v-card-title>
       <v-divider></v-divider>
       <v-row>
-        <v-col md="4" sm="12" xs="12" lg="4">
+
+        <v-col cols="12" md="4" lg="4" xl="4">
           <v-list>
             <v-list-item>主机名：
-              <p>DESKTOP-66VGV3I</p>
+              <p>{{ systemInfo.data.HostName }}</p>
             </v-list-item>
             <v-list-item>主机地址：
-              <p>10.20.229.211</p>
+              <p>{{ systemInfo.data.HostAddress }}</p>
             </v-list-item>
           </v-list>
         </v-col>
 
-        <v-col md="4" sm="12" xs="12" lg="4">
+        <v-col cols="12" md="4" lg="4" xl="4">
           <v-list>
-            <v-list-item>CPU型号：<p>AMD Ryzen 9 5900HS with Radeon Graphics</p></v-list-item>
-            <v-list-item>CPU核心数：<p>8核心/16线程</p></v-list-item>
-            <v-list-item>内存总数：<p>23.4 GiB</p></v-list-item>
+            <v-list-item>CPU型号：<p>{{ systemInfo.data.cpuName }}</p></v-list-item>
+            <v-list-item>CPU核心数：<p>{{ systemInfo.data.cpuCoreCount }}</p></v-list-item>
+            <v-list-item>内存总数：<p>{{ systemInfo.data.totalMemory }}</p></v-list-item>
           </v-list>
         </v-col>
-        <v-col md="4" sm="12" xs="12" lg="4">
+        <v-col cols="12" md="4" lg="4" xl="4">
           <v-list>
-            <v-list-item>系统类型：<p>Windows</p></v-list-item>
-            <v-list-item>系统版本：<p>Windows11 build 22623</p></v-list-item>
-            <v-list-item>java版本(系统)：<p>1.8.0_201</p></v-list-item>
+            <v-list-item>系统类型：<p>{{ systemInfo.data.systemType }}</p></v-list-item>
+            <v-list-item>系统版本：<p>{{ systemInfo.data.systemName }}</p></v-list-item>
+            <v-list-item>java版本(系统)：<p>{{ systemInfo.data.javaVersion }}</p></v-list-item>
           </v-list>
         </v-col>
       </v-row>
@@ -110,8 +111,10 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive } from 'vue';
+import { reactive, onMounted, onBeforeUnmount } from 'vue';
 import axios from 'axios';
+import { before } from 'node:test';
+import { onBeforeRouteLeave } from 'vue-router';
 interface MemoryInterface {
   memTotal: string;
   memFree: string;
@@ -125,15 +128,24 @@ interface CPUInfoInterface {
   cpuSysUsage: string;
   cpuUserUsage: string;
 }
-let cpuCoreCount = "8核心/16线程";
+interface SystemInfoInterface {
+  HostName: string
+  HostAddress: string
+  cpuName: string
+  cpuCoreCount: string
+  systemName: string
+  systemType: string
+  totalMemory: string
+  javaVersion: string
+}
 let memInfo = reactive({ data: <MemoryInterface>{} })
 let cpuInfo = reactive({ data: <CPUInfoInterface>{} })
+let systemInfo = reactive({ data: <SystemInfoInterface>{} })
+
 const headers: object = {
   'Content-Type': 'application/json'
 }
-setInterval(() => {
-  getUsageInfo();
-}, 7000)
+
 
 function getUsageInfo() {
   axios.post("http://localhost:8080/api/system/getCpuUsage", headers).then(r => {
@@ -143,7 +155,31 @@ function getUsageInfo() {
     let data: MemoryInterface = r.data.data
     memInfo.data = data
   })
+
 }
-function getSystemInfo() { }
+function getSystemInfo() {
+  axios.post("http://localhost:8080/api/system/getInfo", headers).then(r => {
+    let data: SystemInfoInterface = r.data.data
+    systemInfo.data = data
+  })
+}
+const timer = setInterval(() => {
+  setTimeout(() => {
+    getUsageInfo();
+  }, 1)
+}, 7000)
+onMounted(() => {
+  getUsageInfo();
+  getSystemInfo();
+
+})
+onBeforeRouteLeave(() => {
+  clearInterval(timer)
+})
+onBeforeUnmount(() => {
+  clearInterval(timer)
+
+})
+
 </script>
 <style></style>
