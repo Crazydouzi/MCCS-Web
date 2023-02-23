@@ -41,7 +41,7 @@ class API {
     options["method"] = urlObject["method"]
     const res = await fetch(url, options);
     if (res.status >= 200 && res.status <= 300) {
-      return await res.json()
+      return res.json()
 
     }
     else {
