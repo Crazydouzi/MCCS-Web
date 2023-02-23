@@ -1,20 +1,28 @@
 <template>
   <v-container>
-    <v-card theme="dark">
-      <v-spacer></v-spacer>
-      <v-textarea id="cmdArea" readonly variant="plain" v-model="cmdValue" hide-details class="cmdTextArea"
-        rows="20"></v-textarea>
-      <v-text-field variant="plain" prefix=" [CMD>]:" v-model="cmdMsg" @keyup.enter.native="sendMsg" hide-details
-        :dirty=true class="cmdInputBox">
-
-      </v-text-field>
-    </v-card>
     <v-card>
-      <v-card-actions>
-        <v-btn @click="openSock">连接</v-btn>
-        <v-btn @click="closeSock">关闭</v-btn>
-      </v-card-actions>
+
     </v-card>
+    <v-row>
+      <v-col cols="12" xs="12" xl="2" md="3" lg="2"> <v-card>
+          <v-card-actions>
+            <v-btn @click="openSock">连接</v-btn>
+            <v-btn @click="closeSock">关闭</v-btn>
+          </v-card-actions>
+        </v-card></v-col>
+      <v-col xs="12"> <v-card theme="dark">
+          <v-spacer></v-spacer>
+          <v-textarea id="cmdArea" readonly variant="plain" v-model="cmdValue" hide-details class="cmdTextArea"
+            rows="20"></v-textarea>
+          <v-text-field variant="plain" prefix=" [CMD>]:" v-model="cmdMsg" @keyup.enter.native="sendMsg" hide-details
+            :dirty=true class="cmdInputBox">
+
+          </v-text-field>
+        </v-card></v-col>
+    </v-row>
+
+
+
   </v-container>
 </template>
 <script setup lang="ts">

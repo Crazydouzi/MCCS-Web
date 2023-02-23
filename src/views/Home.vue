@@ -55,7 +55,7 @@
             <!-- 信息 -->
             <v-card flat>
               <v-card-title class="headline font-weight-bold">
-                占比： {{ memInfo.data.memFree }} / {{ memInfo.data.memTotal }}
+                占比： {{ memInfo.data.memUse }} / {{ memInfo.data.memTotal }}
               </v-card-title>
               <v-list flat>
                 <v-list-item>
@@ -112,55 +112,46 @@
 
 <script lang="ts" setup>
 import { reactive, onMounted, onBeforeUnmount } from 'vue';
-import axios from 'axios';
-import { before } from 'node:test';
-import { onBeforeRouteLeave } from 'vue-router';
+import $API from "@/core/api/fetch"
+import {systemAPI} from "@/core/api/systemAPI"
 interface MemoryInterface {
-  memTotal: string;
-  memFree: string;
-  memUsage: number;
-  memUse: string;
-  jvmMemUse: number;
+  memTotal: string|undefined;
+  memFree: string|undefined;
+  memUsage: number|undefined;
+  memUse: string|undefined;
+  jvmMemUse: number|undefined;
 }
 interface CPUInfoInterface {
-  cpuUsage: number;
-  cpuWaitPer: string;
-  cpuSysUsage: string;
-  cpuUserUsage: string;
+  cpuUsage: number|undefined;
+  cpuWaitPer: string|undefined;
+  cpuSysUsage: string|undefined;
+  cpuUserUsage: string|undefined;
 }
 interface SystemInfoInterface {
-  HostName: string
-  HostAddress: string
-  cpuName: string
-  cpuCoreCount: string
-  systemName: string
-  systemType: string
-  totalMemory: string
-  javaVersion: string
+  HostName: string|undefined;
+  HostAddress: string|undefined;
+  cpuName: string|undefined;
+  cpuCoreCount: string|undefined;
+  systemName: string|undefined;
+  systemType: string|undefined;
+  totalMemory: string|undefined;
+  javaVersion: string|undefined;
 }
 let memInfo = reactive({ data: <MemoryInterface>{} })
 let cpuInfo = reactive({ data: <CPUInfoInterface>{} })
 let systemInfo = reactive({ data: <SystemInfoInterface>{} })
 
-const headers: object = {
-  'Content-Type': 'application/json'
-}
-
-
 function getUsageInfo() {
-  axios.post("http://localhost:8080/api/system/getCpuUsage", headers).then(r => {
-    cpuInfo.data = r.data.data
+  $API.request(systemAPI.getCpuUsage).then(r=>{
+    cpuInfo.data = <CPUInfoInterface>r.data
   })
-  axios.post("http://localhost:8080/api/system/getMemUsage", headers).then(r => {
-    let data: MemoryInterface = r.data.data
-    memInfo.data = data
+  $API.request(systemAPI.getMemUsage).then(r=>{
+    memInfo.data=<MemoryInterface>r.data
   })
-
 }
 function getSystemInfo() {
-  axios.post("http://localhost:8080/api/system/getInfo", headers).then(r => {
-    let data: SystemInfoInterface = r.data.data
-    systemInfo.data = data
+  $API.request(systemAPI.getSystemInfo).then(r=>{
+    systemInfo.data = <SystemInfoInterface>r.data
   })
 }
 const timer = setInterval(() => {
@@ -168,13 +159,11 @@ const timer = setInterval(() => {
     getUsageInfo();
   }, 1)
 }, 7000)
+
 onMounted(() => {
   getUsageInfo();
   getSystemInfo();
 
-})
-onBeforeRouteLeave(() => {
-  clearInterval(timer)
 })
 onBeforeUnmount(() => {
   clearInterval(timer)
