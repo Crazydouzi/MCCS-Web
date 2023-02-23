@@ -28,7 +28,7 @@ class API {
     let options = this.baseOptions;
     let url = urlObject["url"]
     if ("headers" in urlObject) {
-      options["headers"] = urlObject["headers"]
+      options.headers= <HeadersInit>urlObject["headers"]
     }
     if (data) {
       if (urlObject["method"] == 'GET' || urlObject["method"] == 'DELETE') {

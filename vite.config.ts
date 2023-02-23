@@ -39,12 +39,12 @@ export default defineConfig({
     host:'localhost',
     port: 3000,
     proxy: {
-      "/api": {
+      "/ws": {
         target: "http://localhost:8080", // 后台接口
         changeOrigin: true,
         secure: false, // 如果是https接口，需要配置这个参数
         ws: true, //websocket支持
-        rewrite: (path) => path.replace(/^\/api/, ""),
+        rewrite: (path) => path.replace(/^\/ws/, ""),
       },
   }
 }

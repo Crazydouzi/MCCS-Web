@@ -6,8 +6,20 @@
     <v-row>
       <v-col cols="12" xs="12" xl="2" md="3" lg="2"> <v-card>
           <v-card-actions>
-            <v-btn @click="openSock">连接</v-btn>
-            <v-btn @click="closeSock">关闭</v-btn>
+            <v-list>
+              <v-list-item>
+                <v-btn @click="openSock">连接</v-btn>
+              </v-list-item>
+              <v-list-item>
+                <v-btn @click="closeSock">关闭</v-btn>
+              </v-list-item>
+              <v-list-item>
+                <v-btn @click="openServer" :disabled="status">开启服务器</v-btn>
+              </v-list-item>
+              <v-list-item>
+                <v-btn @click="closeServer" :disabled="!status">关闭服务器</v-btn>
+              </v-list-item>
+            </v-list>
           </v-card-actions>
         </v-card></v-col>
       <v-col xs="12"> <v-card theme="dark">
@@ -28,12 +40,16 @@
 <script setup lang="ts">
 // import SockJS from "sockjs-client";
 import SockJS from 'sockjs-client/dist/sockjs.min.js'
-import { onBeforeUnmount, ref, nextTick, watch } from "vue";
+import $API from "@/core/api/fetch";
+import { serverAPI } from '@/core/api/serverAPI'
+import { onBeforeUnmount, ref, nextTick, watch, onBeforeMount } from "vue";
 let sock = null;
 let cmdValue = ref("")
 let cmdMsg = ref('')
+let status = ref(false)
+let timer;
 function openSock() {
-  sock = new SockJS('/api/ws/server/process/');
+  sock = new SockJS('/ws/server/process/');
   sock.onopen = function () {
     console.log('open');
   };
@@ -69,12 +85,38 @@ function autoScroll() {
     textarea.scrollTop = textarea.scrollHeight;
   })
 }
+function openServer() {
+  $API.request(serverAPI.openServer).then(r => {
+    alert(r.msg)
+    serverStatus()
+  })
+}
+function closeServer() {
+  $API.request(serverAPI.closeServer).then(r => {
+    alert(r.msg)
+    serverStatus()
+  })
+}
+function serverStatus() {
+  $API.request(serverAPI.getStatus).then(r => {
+    status.value = r.data
+  })
+}
+
 watch(
   () => cmdValue.value,
   (v1, v2) => { autoScroll() }
 )
+onBeforeMount(() => {
+  // timer = setInterval(() => {
+  //   setTimeout(() => {
+  //     serverStatus()
+  //   }, 1)
+  // }, 10000)
+})
 onBeforeUnmount(() => {
   if (sock) closeSock();
+  if (timer) clearInterval(timer);
 })
 </script>
 <style>
