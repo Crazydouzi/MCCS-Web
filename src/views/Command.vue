@@ -49,7 +49,7 @@ let cmdMsg = ref('')
 let status = ref(false)
 let timer;
 function openSock() {
-  sock = new SockJS('http://localhost:8080/ws/server/process/');
+  sock = new SockJS('/ws/server/process/');
   sock.onopen = function () {
     console.log('open');
   };
