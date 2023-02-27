@@ -48,6 +48,7 @@ let cmdValue = ref("")
 let cmdMsg = ref('')
 let status = ref(false)
 let timer;
+
 function openSock() {
   sock = new SockJS('/ws/server/process/');
   sock.onopen = function () {
