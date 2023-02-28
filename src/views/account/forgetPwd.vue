@@ -26,7 +26,7 @@
                 <v-text-field id="checkPassword" label="确认密码" name="checkPassword" v-model="checkPassword"
                   prepend-icon="mdi-lock" type="password" :rules="[rules.required, rules.pwdMin]"></v-text-field>
 
-                  <v-text-field label="code" name="code" v-model="code" prepend-icon="mdi-key" type="text"
+                <v-text-field label="code" name="code" v-model="code" prepend-icon="mdi-key" type="text"
                   :rules="[rules.required]"></v-text-field>
                 <v-card-actions>
                   <v-spacer></v-spacer>

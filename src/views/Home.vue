@@ -113,44 +113,44 @@
 <script lang="ts" setup>
 import { reactive, onMounted, onBeforeUnmount } from 'vue';
 import $API from "@/core/api/fetch"
-import {systemAPI} from "@/core/api/systemAPI"
+import { systemAPI } from "@/core/api/systemAPI"
 interface MemoryInterface {
-  memTotal: string|undefined;
-  memFree: string|undefined;
-  memUsage: number|undefined;
-  memUse: string|undefined;
-  jvmMemUse: number|undefined;
+  memTotal: string | undefined;
+  memFree: string | undefined;
+  memUsage: number | undefined;
+  memUse: string | undefined;
+  jvmMemUse: number | undefined;
 }
 interface CPUInfoInterface {
-  cpuUsage: number|undefined;
-  cpuWaitPer: string|undefined;
-  cpuSysUsage: string|undefined;
-  cpuUserUsage: string|undefined;
+  cpuUsage: number | undefined;
+  cpuWaitPer: string | undefined;
+  cpuSysUsage: string | undefined;
+  cpuUserUsage: string | undefined;
 }
 interface SystemInfoInterface {
-  HostName: string|undefined;
-  HostAddress: string|undefined;
-  cpuName: string|undefined;
-  cpuCoreCount: string|undefined;
-  systemName: string|undefined;
-  systemType: string|undefined;
-  totalMemory: string|undefined;
-  javaVersion: string|undefined;
+  HostName: string | undefined;
+  HostAddress: string | undefined;
+  cpuName: string | undefined;
+  cpuCoreCount: string | undefined;
+  systemName: string | undefined;
+  systemType: string | undefined;
+  totalMemory: string | undefined;
+  javaVersion: string | undefined;
 }
 let memInfo = reactive({ data: <MemoryInterface>{} })
 let cpuInfo = reactive({ data: <CPUInfoInterface>{} })
 let systemInfo = reactive({ data: <SystemInfoInterface>{} })
 
 function getUsageInfo() {
-  $API.request(systemAPI.getCpuUsage).then(r=>{
+  $API.request(systemAPI.getCpuUsage).then(r => {
     cpuInfo.data = <CPUInfoInterface>r.data
   })
-  $API.request(systemAPI.getMemUsage).then(r=>{
-    memInfo.data=<MemoryInterface>r.data
+  $API.request(systemAPI.getMemUsage).then(r => {
+    memInfo.data = <MemoryInterface>r.data
   })
 }
 function getSystemInfo() {
-  $API.request(systemAPI.getSystemInfo).then(r=>{
+  $API.request(systemAPI.getSystemInfo).then(r => {
     systemInfo.data = <SystemInfoInterface>r.data
   })
 }
