@@ -22,6 +22,10 @@ const routes = [
         path:'command',
         name:'Command',
         component: () => import ('@/views/Command.vue')
+      },{
+        path:'server',
+        name:'Server',
+        component:()=>import('@/views/ServerList.vue')
       },
       {
         path: '/account/login',
