@@ -17,6 +17,6 @@ export interface baseApiOption {
   }
 }
 
-export class apiType {
-  [K: string]: baseApiOption
+export type apiType ={
+  readonly [K in string]: baseApiOption
 }

@@ -19,4 +19,24 @@ export const serverAPI:apiType = {
   getStatus:{
     url:baseUrl+"/server/status",method:"POST"
   }
-}
+}as const;
+export const systemAPI:apiType ={
+  getCpuUsage: {
+    url: baseUrl + "/system/getCpuUsage",
+    method: 'POST'
+  },
+  getSystemInfo: {
+    url: baseUrl + "/system/getInfo",
+    method: 'POST'
+  },
+  getMemUsage: {
+    url: baseUrl + "/system/getMemUsage",
+    method: 'POST'
+  }
+} as const;
+export  const userAPI:apiType={
+  login:{
+    url: baseUrl + "/user/userLogin",
+    method:'POST'
+  },
+}as const;

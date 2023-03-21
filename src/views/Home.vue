@@ -113,7 +113,7 @@
 <script lang="ts" setup>
 import { reactive, onMounted, onBeforeUnmount } from 'vue';
 import $API from "@/core/api/fetch"
-import { systemAPI } from "@/core/api/systemAPI"
+import { systemAPI } from "@/core/api/API"
 interface MemoryInterface {
   memTotal: string | undefined;
   memFree: string | undefined;
