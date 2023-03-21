@@ -9,7 +9,10 @@
             <v-card-actions>
               <v-list>
                 <v-list-item>
-                  状态：{{ status ? "开启" : "关闭" }}
+                  运行状态：
+                  <v-chip class="ma-2" :color="statusColor(status)" variant="outlined" label>
+                    {{ status ? "开启" : "关闭" }}
+                      </v-chip>
                 </v-list-item>
                 <v-list-item>
                   在线人数：{{ "NaN"}}
@@ -130,6 +133,10 @@ function serverStatus() {
   })
 }
 function getServerInfo() {
+
+}
+function statusColor(enable: any) {
+  return enable ? "success" : "error"
 
 }
 watch(

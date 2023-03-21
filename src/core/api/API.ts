@@ -1,6 +1,6 @@
 import { apiType } from "./apiLib.dto";
 const baseUrl = "http://localhost:8080/api"
-export const serverAPI:apiType = {
+export const serverAPI: apiType = {
   openServer: {
     url: baseUrl + "/server/start", method: "POST"
   },
@@ -16,11 +16,14 @@ export const serverAPI:apiType = {
   getSetting: {
     url: baseUrl + "/server/getSettingList", method: "POST"
   },
-  getStatus:{
-    url:baseUrl+"/server/status",method:"POST"
+  getStatus: {
+    url: baseUrl + "/server/status", method: "POST"
+  },
+  getServerList: {
+    url: baseUrl + "/version/list", method: "POST"
   }
-}as const;
-export const systemAPI:apiType ={
+} as const;
+export const systemAPI: apiType = {
   getCpuUsage: {
     url: baseUrl + "/system/getCpuUsage",
     method: 'POST'
@@ -34,9 +37,10 @@ export const systemAPI:apiType ={
     method: 'POST'
   }
 } as const;
-export  const userAPI:apiType={
-  login:{
+export const userAPI: apiType = {
+  login: {
     url: baseUrl + "/user/userLogin",
-    method:'POST'
+    method: 'POST'
   },
-}as const;
+} as const;
+
