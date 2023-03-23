@@ -19,7 +19,7 @@
           <div v-if="windowStatus">
             <!-- 这个横向转动的动画有问题 -->
             <!-- <v-scroll-x-transition> -->
-            <component :is="window"  />
+            <component :is="window" @close="closeWindow()"/>
 
             <!-- </v-scroll-x-transition> -->
           </div>
@@ -91,34 +91,50 @@ let windowStatus = ref(false)
 function instanceWindow(component: String) {
   switch (component) {
     case "AddInstance":
-      window.value = AddInstance;
-      windowStatus.value = !windowStatus.value
+      switchComponent(AddInstance)
       break;
     case "UploadInstance":
-      window.value = UploadInstance;
-      windowStatus.value = !windowStatus.value
-
+      switchComponent(UploadInstance)
       break;
     default:
       windowStatus.value = false
-      windowStatus.value = !windowStatus.value
-
+      window.value = null;
   }
 }
+
 function getServerList() {
   $API.request(serverAPI.getServerList).then(r => {
     console.log(r)
     serverList.value = r.data
   })
 }
-function toolbarColor(enable: any) {
+function toolbarColor(enable: Boolean|Number) {
   return enable ? "red" : "grey"
 }
-function statusColor(enable: any) {
+function statusColor(enable: Boolean|Number) {
   return enable ? "success" : "error"
 
 }
+function closeWindow(){
+  windowStatus.value = !windowStatus.value
+  window.value=null
+}
+function switchComponent(component: any) {
+  if (window.value == component) {
+    windowStatus.value = false
+    window.value = null
+  }
+  else if (window.value != component && windowStatus.value) {
+    window.value = component;
+
+  }
+  else {
+    window.value = component;
+    windowStatus.value = !windowStatus.value
+  }
+}
 onBeforeMount(() => {
   getServerList()
+
 })
 </script>
