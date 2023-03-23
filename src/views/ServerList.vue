@@ -10,18 +10,22 @@
       <v-card-text>
         <v-row>
           <v-col cols="12">
-            <v-btn x-large class="mx-5" variant="outlined" @click="openDialog('AddServer')">添加实例</v-btn>
-            <v-btn x-large class="mx-5" variant="outlined"  @click="openDialog('UploadServer')">上传实例</v-btn>
-            <v-btn x-large class="mx-5" variant="outlined"  @click="openDialog('ScanServer')">扫描实例</v-btn>
+            <v-btn x-large class="mx-5" variant="outlined" @click="instanceWindow('AddInstance')">添加实例</v-btn>
+            <v-btn x-large class="mx-5" variant="outlined" @click="instanceWindow('UploadInstance')">上传实例</v-btn>
+            <v-btn x-large class="mx-5" variant="outlined" @click="instanceWindow('ScanInstance')">扫描实例</v-btn>
           </v-col>
         </v-row>
-        <transition name="component-fade" mode="out-in">
-          <component :is="dialog?AddInstance:null"></component>
-        </transition>
+        <v-expand-transition>
+          <div v-if="window">
+            <v-scroll-x-transition>
+              <component :is="window" />
+
+            </v-scroll-x-transition>
+          </div>
+        </v-expand-transition>
       </v-card-text>
 
     </v-card>
-
     <v-card class="mt-5" color="#f3f3f3" flat>
       <v-row class="mx-auto">
         <v-col cols="12">
@@ -77,13 +81,23 @@
 <script setup lang="ts">
 import $API from "@/core/api/fetch";
 import { serverAPI } from '@/core/api/API'
-import { onBeforeMount,ref } from "vue";
+import { onBeforeMount, ref, shallowRef } from "vue";
 import AddInstance from '@/components/AddInstance.vue'
+import UploadInstance from '@/components/UploadInstance.vue'
 let serverList = ref();
-let dialog=ref(false)
+let window = shallowRef(null)
 
-function openDialog(component:String){
-  dialog.value=!dialog.value
+function instanceWindow(component: String) {
+  switch (component) {
+    case "AddInstance":
+      window.value = AddInstance;
+      break;
+    case "UploadInstance":
+      window.value = UploadInstance;
+      break;
+    default:
+      window.value = null;
+  }
 }
 function getServerList() {
   $API.request(serverAPI.getServerList).then(r => {
@@ -103,17 +117,23 @@ onBeforeMount(() => {
 })
 </script>
 <style>
-
-.dialogCard{
+.dialogCard {
   width: calc(100%);
   height: 100vh;
+  transition: width .3s ease;
 
 }
-.component-fade-enter-active, .component-fade-leave-active {
+
+.component-fade-enter-active,
+.component-fade-leave-active {
   transition: opacity .3s ease;
 }
-.component-fade-enter, .component-fade-leave-to
-/* .component-fade-leave-active for below version 2.1.8 */ {
+
+.component-fade-enter,
+.component-fade-leave-to
+
+/* .component-fade-leave-active for below version 2.1.8 */
+  {
   opacity: 0;
 }
 </style>
