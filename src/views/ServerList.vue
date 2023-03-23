@@ -92,15 +92,17 @@ function instanceWindow(component: String) {
   switch (component) {
     case "AddInstance":
       window.value = AddInstance;
-      windowStatus.value = true
+      windowStatus.value = !windowStatus.value
       break;
     case "UploadInstance":
       window.value = UploadInstance;
-      windowStatus.value = true
+      windowStatus.value = !windowStatus.value
+
       break;
     default:
       windowStatus.value = false
-      window.value = null;
+      windowStatus.value = !windowStatus.value
+
   }
 }
 function getServerList() {
