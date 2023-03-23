@@ -114,6 +114,7 @@
 import { reactive, onMounted, onBeforeUnmount } from 'vue';
 import $API from "@/core/api/fetch"
 import { systemAPI } from "@/core/api/API"
+import SockJS from 'sockjs-client/dist/sockjs.min.js'
 interface MemoryInterface {
   memTotal: string | undefined;
   memFree: string | undefined;
@@ -140,34 +141,45 @@ interface SystemInfoInterface {
 let memInfo = reactive({ data: <MemoryInterface>{} })
 let cpuInfo = reactive({ data: <CPUInfoInterface>{} })
 let systemInfo = reactive({ data: <SystemInfoInterface>{} })
+let socket:SockJS = null;
+let socketStatus = false;
+let usageTimer = null;
+function usageInfoSocket() {
+  socket = new SockJS(systemAPI.usageInfoWS.url)
+  socket.onopen = function () {
+    console.log('open');
+    socketStatus = true
+    socket.send("systemUsage")
+    usageTimer = setInterval(() => {
+      setTimeout(() => {
+        socket.send("systemUsage")
+      }, 1)
+    },7000)
 
-function getUsageInfo() {
-  $API.request(systemAPI.getCpuUsage).then(r => {
-    cpuInfo.data = <CPUInfoInterface>r.data
-  })
-  $API.request(systemAPI.getMemUsage).then(r => {
-    memInfo.data = <MemoryInterface>r.data
-  })
+    socket.onmessage = (r: { data: any; }) => {
+      let data=JSON.parse(r.data)
+      cpuInfo.data = <CPUInfoInterface>data.cpuUsage
+      memInfo.data = <MemoryInterface>data.memUsage
+    };
+  };
+
 }
 function getSystemInfo() {
   $API.request(systemAPI.getSystemInfo).then(r => {
+    console.log(r.data)
     systemInfo.data = <SystemInfoInterface>r.data
   })
 }
-const timer = setInterval(() => {
-  setTimeout(() => {
-    getUsageInfo();
-  }, 1)
-}, 7000)
-
 onMounted(() => {
-  getUsageInfo();
+  usageInfoSocket()
   getSystemInfo();
 
 })
 onBeforeUnmount(() => {
-  clearInterval(timer)
-
+  if (usageTimer != null&&socketStatus) {
+    clearInterval(usageTimer);
+    socket.close();
+  }
 })
 
 </script>
