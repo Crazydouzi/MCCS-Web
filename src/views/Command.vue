@@ -5,7 +5,7 @@
       <v-list style="background-color:#f3f3f3; ">
         <v-list-item>
           <v-card>
-            <v-card-title>ServerName</v-card-title>
+            <v-card-title >ServerName</v-card-title>
             <v-card-actions>
               <v-list>
                 <v-list-item>

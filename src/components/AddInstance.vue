@@ -1,79 +1,46 @@
 <template>
-  <v-container class="fill-height">
-    <v-responsive class="d-flex align-center text-center fill-height">
-      <v-img
-        contain
-        height="300"
-        src="@/assets/logo.svg"
-      />
+  <v-form>
+    <v-container class="fill-height" fluid>
+      <v-list style="width: 100%;">
+        <h3 class="my-3">基本配置</h3>
+        <v-list-item>
+          <v-list-item-title>服务器名</v-list-item-title>
+          <v-text-field :counter="10" label="服务器名" required variant="underlined"></v-text-field>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-title>版本</v-list-item-title>
+          <v-text-field :counter="10" label="版本" required variant="underlined"></v-text-field>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-title>请选择core</v-list-item-title>
+          <v-select :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
+            variant="underlined"></v-select>
+        </v-list-item>
+        <v-divider color="black"></v-divider>
+        <h3 class="my-3">参数配置</h3>
+        <v-list-item>
+          <v-list-item-title>Java路径</v-list-item-title>
+          <v-text-field :counter="10" label="JavaVersion" required variant="underlined"></v-text-field>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-title>内存分配</v-list-item-title>
+          <v-row>
+            <v-col><v-text-field  label="最大值" required variant="underlined"></v-text-field></v-col>
+            <v-col><v-text-field  label="最小值" required variant="underlined"></v-text-field></v-col>
+          </v-row>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-title>启动参数设置</v-list-item-title>
+          <v-text-field :counter="10" label="VMOptions" required variant="underlined"></v-text-field>
+        </v-list-item>
+      </v-list>
 
-      <div class="text-body-2 font-weight-light mb-n1">Welcome to</div>
+    </v-container>
 
-      <h1 class="text-h2 font-weight-bold">Vuetify</h1>
-
-      <div class="py-14" />
-
-      <v-row class="d-flex align-center justify-center">
-        <v-col cols="auto">
-          <v-btn
-            href="https://next.vuetifyjs.com/components/all/"
-            min-width="164"
-            rel="noopener noreferrer"
-            target="_blank"
-            variant="text"
-          >
-            <v-icon
-              icon="mdi-view-dashboard"
-              size="large"
-              start
-            />
-
-            Components
-          </v-btn>
-        </v-col>
-
-        <v-col cols="auto">
-          <v-btn
-            color="primary"
-            href="https://next.vuetifyjs.com/introduction/why-vuetify/#feature-guides"
-            min-width="228"
-            rel="noopener noreferrer"
-            size="x-large"
-            target="_blank"
-            variant="flat"
-          >
-            <v-icon
-              icon="mdi-speedometer"
-              size="large"
-              start
-            />
-
-            Get Started
-          </v-btn>
-        </v-col>
-
-        <v-col cols="auto">
-          <v-btn
-            href="https://community.vuetifyjs.com/"
-            min-width="164"
-            rel="noopener noreferrer"
-            target="_blank"
-            variant="text"
-          >
-            <v-icon
-              icon="mdi-account-group"
-              size="large"
-              start
-            />
-
-            Community
-          </v-btn>
-        </v-col>
-      </v-row>
-    </v-responsive>
-  </v-container>
+  </v-form>
 </template>
 
 <script lang="ts" setup>
+
   //
 </script>

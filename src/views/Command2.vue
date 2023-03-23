@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="12" xs="12" xl="2" md="3" lg="2"> <v-card>
+      <v-col cols="12" xs="12" xl="2" md="3" lg="2"> <v-card >
           <v-card-actions>
             <v-list>
               <v-list-item>
@@ -31,7 +31,6 @@
   </v-container>
 </template>
 <script setup lang="ts">
-// import SockJS from "sockjs-client";
 import SockJS from 'sockjs-client/dist/sockjs.min.js'
 import Stomp from 'stompjs'
 import $API from "@/core/api/fetch";

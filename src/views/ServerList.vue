@@ -16,11 +16,12 @@
           </v-col>
         </v-row>
         <v-expand-transition>
-          <div v-if="window">
-            <v-scroll-x-transition>
-              <component :is="window" />
+          <div v-if="windowStatus">
+            <!-- 这个横向转动的动画有问题 -->
+            <!-- <v-scroll-x-transition> -->
+            <component :is="window"  />
 
-            </v-scroll-x-transition>
+            <!-- </v-scroll-x-transition> -->
           </div>
         </v-expand-transition>
       </v-card-text>
@@ -86,16 +87,19 @@ import AddInstance from '@/components/AddInstance.vue'
 import UploadInstance from '@/components/UploadInstance.vue'
 let serverList = ref();
 let window = shallowRef(null)
-
+let windowStatus = ref(false)
 function instanceWindow(component: String) {
   switch (component) {
     case "AddInstance":
       window.value = AddInstance;
+      windowStatus.value = true
       break;
     case "UploadInstance":
       window.value = UploadInstance;
+      windowStatus.value = true
       break;
     default:
+      windowStatus.value = false
       window.value = null;
   }
 }
@@ -116,24 +120,3 @@ onBeforeMount(() => {
   getServerList()
 })
 </script>
-<style>
-.dialogCard {
-  width: calc(100%);
-  height: 100vh;
-  transition: width .3s ease;
-
-}
-
-.component-fade-enter-active,
-.component-fade-leave-active {
-  transition: opacity .3s ease;
-}
-
-.component-fade-enter,
-.component-fade-leave-to
-
-/* .component-fade-leave-active for below version 2.1.8 */
-  {
-  opacity: 0;
-}
-</style>
