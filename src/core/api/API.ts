@@ -1,45 +1,52 @@
 import { apiType } from "./apiLib.dto";
-const baseUrl = "http://localhost:8080/api"
+const APIUrl = "http://localhost:8080/api"
+const WSUrl= "http://localhost:8080/ws"
 export const serverAPI: apiType = {
   openServer: {
-    url: baseUrl + "/server/start", method: "POST"
+    url: APIUrl + "/server/start", method: "POST"
   },
   closeServer: {
-    url: baseUrl + "/server/stop", method: "POST"
+    url: APIUrl + "/server/stop", method: "POST"
   },
   modifyServerConfig: {
-    url: baseUrl + "/server/modifyServerOption", method: "POST"
+    url: APIUrl + "/server/modifyServerOption", method: "POST"
   },
   modifyServerInfo: {
-    url: baseUrl + "/server/modifyServerInfo", method: "POST"
+    url: APIUrl + "/server/modifyServerInfo", method: "POST"
   },
   getSetting: {
-    url: baseUrl + "/server/getSettingList", method: "POST"
+    url: APIUrl + "/server/getSettingList", method: "POST"
   },
   getStatus: {
-    url: baseUrl + "/server/status", method: "POST"
+    url: APIUrl + "/server/status", method: "POST"
   },
   getServerList: {
-    url: baseUrl + "/version/list", method: "POST"
+    url: APIUrl + "/version/list", method: "POST"
   }
 } as const;
 export const systemAPI: apiType = {
   getCpuUsage: {
-    url: baseUrl + "/system/getCpuUsage",
+    url: APIUrl + "/system/getCpuUsage",
     method: 'POST'
   },
   getSystemInfo: {
-    url: baseUrl + "/system/getInfo",
+    url: APIUrl + "/system/getInfo",
     method: 'POST'
   },
   getMemUsage: {
-    url: baseUrl + "/system/getMemUsage",
+    url: APIUrl + "/system/getMemUsage",
     method: 'POST'
+  },
+  usageInfoWS:{
+    url:WSUrl+"/system/usage/",
+    method:'WS'
   }
+
+
 } as const;
 export const userAPI: apiType = {
   login: {
-    url: baseUrl + "/user/userLogin",
+    url: APIUrl + "/user/userLogin",
     method: 'POST'
   },
 } as const;

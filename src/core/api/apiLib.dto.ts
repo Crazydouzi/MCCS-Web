@@ -8,6 +8,7 @@ type Method =
   | 'PATCH'
   | 'LINK'
   | 'UNLINK'
+  | 'WS'
 
 export interface baseApiOption {
   url: string
