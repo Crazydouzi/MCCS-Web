@@ -25,7 +25,7 @@ class API {
     return parts.join('&')
   }
   public async request(urlObject: object, data?: Record<string, string | number | boolean>) {
-    let options = this.baseOptions;
+    let options = Object.assign({},this.baseOptions);
     let url = urlObject["url"]
     if ("headers" in urlObject) {
       options.headers= <HeadersInit>urlObject["headers"]
@@ -42,7 +42,6 @@ class API {
     const res = await fetch(url, options);
     if (res.status >= 200 && res.status <= 300) {
       return res.json()
-
     }
     else {
       throw new Error("[API Request]Network error: " + res.statusText)
