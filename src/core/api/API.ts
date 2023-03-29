@@ -18,12 +18,18 @@ export const serverAPI: apiType = {
     url: APIUrl + "/server/getSettingList", method: "POST"
   },
   getStatus: {
-    url: APIUrl + "/server/status", method: "POST"
+    url: APIUrl + "/server/status", method: "GET"
   },
   getServerList: {
-    url: APIUrl + "/version/list", method: "POST"
+    url: APIUrl + "/version/list", method: "GET"
   }
 } as const;
+export const versionAPI:apiType={
+  enableServerInfo:{
+    url: APIUrl + "/version/enableServerInfo",
+    method: 'GET'
+  }
+}
 export const systemAPI: apiType = {
   getCpuUsage: {
     url: APIUrl + "/system/getCpuUsage",

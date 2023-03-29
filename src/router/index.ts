@@ -1,7 +1,6 @@
-// Composables
-import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory, createWebHistory, RouteRecordRaw } from 'vue-router'
 
-const routes = [
+const routes:RouteRecordRaw[] = [
   {
     path: '/',
     component: () => import('@/layouts/default/Default.vue'),
@@ -9,23 +8,33 @@ const routes = [
     //   if (to.name !== 'Login' && !sessionStorage.getItem('user-sessionToken')) next({ name: 'Login' })
     //   else next()
     // },
+    redirect:'Home',
     children: [
       {
         path: '',
         name: 'Home',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () => import(/* webpackChunkName: "home" */ '@/views/Home.vue'),
+        component: () => import('@/views/Home.vue'),
       },
       {
-        path:'command',
-        name:'Command',
-        component: () => import ('@/views/Command.vue')
-      },{
-        path:'server',
-        name:'Server',
-        component:()=>import('@/views/ServerList.vue')
+        path: 'command',
+        name: 'Command',
+        component: () => import('@/views/Command.vue')
+      }, {
+        path: 'server',
+        component: () => import('@/views/instance/index.vue'),
+        redirect: 'Server',
+        children: [
+          {
+            path: '',
+            name: 'Server',
+            component: () => import('@/views/instance/Instance.vue')
+          },{
+            path:'manage/:id',
+            name:'InstanceManage',
+            component:()=>import('@/views/instance/InstanceManage.vue')
+          }
+
+        ]
       },
       {
         path: '/account/login',
@@ -39,7 +48,8 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHashHistory(process.env.BASE_URL),
+  // history: createWebHashHistory(process.env.BASE_URL),
+  history: createWebHistory(),
   routes,
 })
 
