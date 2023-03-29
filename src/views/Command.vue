@@ -5,7 +5,7 @@
       <v-list style="background-color:#f3f3f3; ">
         <v-list-item>
           <v-card>
-            <v-card-title >ServerName</v-card-title>
+            <v-card-title >服务器：{{serverName}}</v-card-title>
             <v-card-actions>
               <v-list>
                 <v-list-item>
@@ -68,11 +68,12 @@
 <script setup lang="ts">
 import SockJS from 'sockjs-client/dist/sockjs.min.js'
 import $API from "@/core/api/fetch";
-import { serverAPI } from '@/core/api/API'
-import { onBeforeUnmount, ref, nextTick, watch, onBeforeMount, onMounted } from "vue";
+import { serverAPI,versionAPI } from '@/core/api/API'
+import { onBeforeUnmount, ref, nextTick, watch,  onMounted } from "vue";
 let sock = null;
 let cmdValue = ref("")
 let cmdMsg = ref('')
+let serverName=ref('')
 let status = ref(false)
 let socketStatus = ref(false)
 let timer: NodeJS.Timer;
@@ -133,7 +134,10 @@ function serverStatus() {
   })
 }
 function getServerInfo() {
-
+  $API.request(versionAPI.enableServerInfo).then(r=>{
+    console.log(r)
+    serverName.value=r.data.serverName
+  })
 }
 function statusColor(enable: any) {
   return enable ? "success" : "error"
@@ -144,6 +148,8 @@ watch(
   (v1, v2) => { autoScroll() }
 )
 onMounted(() => {
+  serverStatus()
+  getServerInfo()
   timer = setInterval(() => {
     setTimeout(() => {
       serverStatus()

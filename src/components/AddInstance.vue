@@ -20,6 +20,9 @@
             :rules="[rules.required]"></v-select>
         </v-list-item>
         <v-list-item v-else-if="versionInfo.from === '用户上传'">
+          <v-list-item-title>请选择服务器类型</v-list-item-title>
+          <v-select :items="['paper', 'forge']" value="paper" change="alert" variant="underlined"
+            :rules="[rules.required]"></v-select>
           <v-row>
             <v-col>
               <v-file-input label="请选择Core" required variant="underlined" :rules="[rules.required]"
