@@ -12,10 +12,10 @@
         <v-list-item>
           <v-row>
             <v-col>
-              <v-file-input label="请选择整合包" required variant="underlined" :rules="[rules.required]"
+              <v-file-input label="请选择整合包" required variant="underlined" :rules="[rules.required]" v-model="files"
                 accept=".zip"></v-file-input>
             </v-col>
-            <v-col><v-text-field label="版本" required variant="underlined"
+            <v-col><v-text-field label="版本" required variant="underlined" v-model="MCServer.version"
                 :rules="[rules.required]"></v-text-field></v-col>
           </v-row>
         </v-list-item>
@@ -23,7 +23,8 @@
         <h3 class="my-3">参数配置</h3>
         <v-list-item>
           <v-select :items="[{ title: '自动扫描', value: 'true' }, { title: '手动配置', value: false }]" variant="underlined"
-            v-model="autoScan" :hint="autoScan ? '请确保整合包文件包含.sh或.bat启动文件' : ''" persistent-hint class="select-box"></v-select>
+            v-model="autoScan" :hint="autoScan ? '请确保整合包文件包含.sh或.bat启动文件' : ''" persistent-hint
+            class="select-box"></v-select>
         </v-list-item>
         <div v-show="!autoScan">
           <v-list-item>
@@ -69,42 +70,47 @@
 <script lang="ts" setup>
 import { onBeforeMount, reactive, ref } from 'vue'
 import $API from '@/core/api/fetch';
-// import { title } from 'process';
-interface MCSetting {
-  javaVersion: String,
-  memMin: String,
-  memMax: String,
-  VMOptions: String,
-  jarName: String
-}
-interface MCServer {
-  serverName: String,
-  version: String,
-
-}
-let MCSetting = reactive<MCSetting>({
+import MCServerInterface from '@/core/interface/MCServerInterface';
+import MCSettingInterface from '@/core/interface/MCSettingInterface';
+import { versionAPI } from '@/core/api/API';
+let MCSetting = reactive<MCSettingInterface>({
   javaVersion: "java",
   memMin: "1G",
   memMax: "2G",
   VMOptions: undefined,
   jarName: undefined
 })
-let MCServer = reactive<MCServer>({
+let MCServer = reactive<MCServerInterface>({
   serverName: undefined,
-  version: undefined
+  version: undefined,
+  enable: undefined
 })
+let files = ref()
 let autoScan = ref({ title: '自动扫描', value: true })
 const rules: any = {
   required: (value: any) => value ? true : '此项不能为空',
 }
-const emit = defineEmits(['close'])
+const emit = defineEmits(['close', 'getServerList'])
 function close() {
   emit('close')
 }
 
 
 function save() {
-
+  let data = {
+    "file": files.value[0],
+    MCServer,
+    MCSetting
+  }
+  // data["file"]=
+  console.log(data);
+  $API.request(versionAPI.mcServerUpload, data).then(r => {
+    alert(r.data)
+  }).catch(r => {
+    alert(r.msg)
+  }).finally(() => {
+    emit("getServerList")
+  })
 }
 onBeforeMount(() => {
 })

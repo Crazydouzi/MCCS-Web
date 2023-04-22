@@ -27,9 +27,10 @@
           <v-row>
             <v-col>
               <v-file-input label="请选择Core" required variant="underlined" :rules="[rules.required]"
-                accept=".jar" v-model="file"></v-file-input>
+                accept=".jar" v-model="files"></v-file-input>
             </v-col>
             <v-col><v-text-field label="版本" required variant="underlined"
+                v-model="MCServer.version"
                 :rules="[rules.required]"></v-text-field></v-col>
           </v-row>
         </v-list-item>
@@ -77,29 +78,20 @@
 import {  onBeforeMount, reactive, ref } from 'vue'
 import $API from '@/core/api/fetch';
 import { versionAPI } from '@/core/api/API';
-interface MCSetting {
-  javaVersion: String,
-  memMin: String,
-  memMax: String,
-  VMOptions: String,
-  jarName: String
-
-}
-interface MCServer {
-  serverName: String,
-  version: String,
-
-}
-let MCSetting = reactive<MCSetting>({
+import MCServerInterface from '@/core/interface/MCServerInterface';
+import MCSettingInterface from '@/core/interface/MCSettingInterface';
+import { file } from '@babel/types';
+let MCSetting = reactive<MCSettingInterface>({
   javaVersion: "java",
   memMin: "1G",
   memMax: "2G",
   VMOptions: undefined,
   jarName: undefined
 })
-let MCServer = reactive<MCServer>({
-  serverName: undefined,
-  version: undefined
+let MCServer = reactive<MCServerInterface>({
+serverName: undefined,
+version: undefined,
+enable: false
 })
 let versionInfo = reactive({
   from: "paper",
@@ -118,11 +110,11 @@ let paperRequestInfo = {
     accept: "application/json"
   }
 }
-let file=ref()
+let files=ref()
 const rules: any = {
   required: (value: any) =>{return value ? true : '此项不能为空'},
 }
-const emit = defineEmits(['close'])
+const emit = defineEmits(['close','getServerList'])
 function close() {
   emit('close')
 }
@@ -152,11 +144,19 @@ async function save() {
   if(isValid.value){
     if (versionInfo.from == "用户上传") {
       let data={
-        file:file.value,
+        "file":files.value[0],
         MCServer,
         MCSetting
       }
+      // data["file"]=
       console.log(data);
+      $API.request(versionAPI.mcServerUpload,data).then(r=>{
+        alert(r.data)
+      }).catch(r=>{
+        alert(r.msg)
+      }).finally(()=>{
+        emit("getServerList")
+      })
     } else {
     getDownLoadLink().then(() => {
       console.log("完成")
@@ -167,9 +167,10 @@ async function save() {
         versionInfo
       }
       $API.request(versionAPI.installRemoteMCServer,data).then(r=>{
-        console.log(r)
+        alert(r.data)
+      }).finally(()=>{
+        emit("getServerList")
       })
-      console.log(data)
     })
   }
   }
