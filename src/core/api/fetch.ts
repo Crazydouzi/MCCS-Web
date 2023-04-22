@@ -16,7 +16,7 @@ class API {
       replace(/%5B/gi, '[').
       replace(/%5D/gi, ']')
   }
-  private  paramsSerializer(params?: Record<string, string | number | boolean | undefined>): string {
+  private  paramsSerializer(params?: Record<string, string | number | boolean | undefined|object>): string {
     //{k:v, k2:v2...} => k=v&k2=v2...
     let parts: string[] = [];
     Object.keys(params).forEach((k) => {
@@ -24,7 +24,7 @@ class API {
     })
     return parts.join('&')
   }
-  public async request(urlObject: object, data?: Record<string, string | number | boolean>) {
+  public async request(urlObject: object, data?: Record<string, string | number | boolean|object>) {
     let options = Object.assign({},this.baseOptions);
     let url = urlObject["url"]
     if ("headers" in urlObject) {

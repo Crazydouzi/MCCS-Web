@@ -7,14 +7,14 @@
             <v-toolbar dark flat>
               <v-toolbar-title>登录</v-toolbar-title>
               <v-spacer></v-spacer>
-              <!-- <v-tooltip bottom>
-                  <template v-slot:activator="{ on }">
-                    <v-btn :href="source" icon large target="_blank" v-on="on">
+              <v-tooltip bottom>
+                  <template>
+                    <v-btn @click="$router.push({name:'Forget'})" icon large target="_blank" v-on="on">
                       <v-icon>mdi-code-tags</v-icon>
                     </v-btn>
                   </template>
-                  <span>找回密码(想淦蛤呢)</span>
-                </v-tooltip> -->
+                  <span>找回密码</span>
+                </v-tooltip>
             </v-toolbar>
             <v-card-text>
               <!-- <v-alert type="error" color="error" outlined dense>{{ errInfo }}</v-alert> -->
@@ -39,6 +39,7 @@
   </v-container>
 </template>
 <script setup lang="ts">
+import router from '@/router';
 import { ref } from 'vue';
 const username = ref('');
 const password = ref('');

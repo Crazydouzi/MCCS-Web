@@ -28,15 +28,16 @@
     <v-card class="mt-5" color="#f3f3f3" flat>
       <v-row class="mx-auto">
         <v-col cols="12">
-          <v-row justify="start">
-            <div v-for="server in serverList">
-              <v-card height="250px" width="350px" class="mr-3 mt-3">
+          <v-row justify="center" >
+<!--
+            <div v-for="(server,index) in serverList" :key="index" class="mx-auto mt-6">
+              <v-card height="250px" min-width="350px">
                 <v-toolbar density="comfortable" :color="toolbarColor(server.enable)">
                   <v-toolbar-title>{{ server.serverName }}</v-toolbar-title>
                   <v-spacer></v-spacer>
                 </v-toolbar>
                 <v-card-actions>
-                  <v-list class="mx-auto">
+                  <v-list >
                     <v-list-item>版本：{{ server.version }}</v-list-item>
                     <v-list-item>服务器状态： <v-chip class="ma-2" :color="statusColor(server.enable)" variant="outlined" label>
                         {{ server.enable ? "启用" : "停用" }}
@@ -45,11 +46,6 @@
                         {{ status && server.enable ? "运行中" : "已关闭" }}
                       </v-chip>
                     </v-list-item>
-                    <!-- <v-list-item>运行状态：
-                        <v-chip class="ma-2" :color="statusColor(server.enable)" variant="outlined" label>
-                        {{ server.enable ? "启用" : "停用" }}
-                      </v-chip>
-                    </v-list-item> -->
                     <v-divider />
                     <v-list-item>
                       <v-row justify-center>
@@ -63,7 +59,41 @@
                   </v-list>
                 </v-card-actions>
               </v-card>
-            </div>
+            </div> -->
+
+            <v-col v-for="(server,index) in serverList" :key="index" >
+              <v-card min-width="330px">
+                <v-toolbar density="comfortable" :color="toolbarColor(server.enable)">
+                  <v-toolbar-title>{{ server.serverName }}</v-toolbar-title>
+                  <v-spacer></v-spacer>
+                </v-toolbar>
+                <v-card-actions>
+                  <v-list >
+                    <v-list-item>版本：{{ server.version }}</v-list-item>
+                    <v-list-item>服务器状态： <v-chip class="ma-2" :color="statusColor(server.enable)" variant="outlined" label>
+                        {{ server.enable ? "启用" : "停用" }}
+                      </v-chip>
+                      <v-chip class="ma-2" :color="statusColor(status && server.enable)" variant="outlined" label>
+                        {{ status && server.enable ? "运行中" : "已关闭" }}
+                      </v-chip>
+                    </v-list-item>
+                    <v-divider />
+                    <v-list-item>
+                      <!-- <v-row justify-center>
+                        <v-col cols="12"> -->
+                          <v-btn @click="$router.push({ name: 'InstanceManage', params: { id: server.id } })" style="padding-left:0px">管理</v-btn>
+                          <v-btn :disabled="!server.enable" @click="$router.push({ name: 'Command' })">终端</v-btn>
+                          <v-btn :disabled="!(server.enable && !status)" @click="openServer()">开启</v-btn>
+                          <v-btn :disabled="!(server.enable && status)" @click="closeServer()">关闭</v-btn>
+                        <!-- </v-col>
+                      </v-row> -->
+                    </v-list-item>
+                  </v-list>
+                </v-card-actions>
+              </v-card>
+            </v-col>
+
+
           </v-row>
         </v-col>
       </v-row>
@@ -72,7 +102,7 @@
 </template>
 <script setup lang="ts">
 import $API from "@/core/api/fetch";
-import { serverAPI } from '@/core/api/API'
+import { serverAPI,versionAPI } from '@/core/api/API'
 import { onBeforeMount, onBeforeUnmount, onMounted, ref, shallowRef } from "vue";
 import AddInstance from '@/components/AddInstance.vue'
 import UploadInstance from '@/components/UploadInstance.vue'
@@ -83,8 +113,7 @@ let status = ref(false)
 let timer: NodeJS.Timer;
 
 function getServerList() {
-  $API.request(serverAPI.getServerList).then(r => {
-    console.log(r)
+  $API.request(versionAPI.getServerList).then(r => {
     serverList.value = r.data
   })
 }
@@ -149,11 +178,11 @@ onBeforeMount(() => {
 
 })
 onMounted(() => {
-  timer = setInterval(() => {
-    setTimeout(() => {
-      serverStatus()
-    }, 1)
-  }, 10000)
+  // timer = setInterval(() => {
+  //   setTimeout(() => {
+  //     serverStatus()
+  //   }, 1)
+  // }, 10000)
 })
 onBeforeUnmount(() => {
   if (timer != null) clearInterval(timer)

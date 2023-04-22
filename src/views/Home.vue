@@ -166,7 +166,6 @@ function usageInfoSocket() {
 }
 function getSystemInfo() {
   $API.request(systemAPI.getSystemInfo).then(r => {
-    console.log(r.data)
     systemInfo.data = <SystemInfoInterface>r.data
   })
 }

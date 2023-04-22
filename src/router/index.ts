@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory, createWebHistory, RouteRecordRaw } from 'vue-router'
 
-const routes:RouteRecordRaw[] = [
+const routes: RouteRecordRaw[] = [
   {
     path: '/',
     component: () => import('@/layouts/default/Default.vue'),
@@ -8,7 +8,7 @@ const routes:RouteRecordRaw[] = [
     //   if (to.name !== 'Login' && !sessionStorage.getItem('user-sessionToken')) next({ name: 'Login' })
     //   else next()
     // },
-    redirect:'Home',
+    redirect: 'Home',
     children: [
       {
         path: '',
@@ -28,18 +28,33 @@ const routes:RouteRecordRaw[] = [
             path: '',
             name: 'Server',
             component: () => import('@/views/instance/Instance.vue')
+          }, {
+            path: 'manage/:id/',
+            name: 'InstanceManage',
+            component: () => import('@/views/instance/InstanceManage.vue')
           },{
-            path:'manage/:id',
-            name:'InstanceManage',
-            component:()=>import('@/views/instance/InstanceManage.vue')
+            path:'manage/:id/plugins',
+            name:'PluginsManage',
+            component:()=>import('@/views/instance/pluginsManage.vue'),
           }
 
         ]
       },
       {
+        path: '/system',
+        name: 'System',
+        component: () => import('@/views/SystemManager.vue')
+      },
+      {
         path: '/account/login',
         name: 'Login',
         component: () => import('@/views/account/login.vue')
+      },
+      {
+        path: '/account/forget',
+        name: 'Forget',
+        component: () => import('@/views/account/forgetPwd.vue')
+
       }
 
     ],

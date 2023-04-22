@@ -7,27 +7,32 @@
             <v-toolbar dark flat>
               <v-toolbar-title>忘记密码</v-toolbar-title>
               <v-spacer></v-spacer>
-              <!-- <v-tooltip bottom>
-                  <template v-slot:activator="{ on }">
-                    <v-btn :href="source" icon large target="_blank" v-on="on">
-                      <v-icon>mdi-code-tags</v-icon>
-                    </v-btn>
-                  </template>
-                  <span>找回密码(想淦蛤呢)</span>
-                </v-tooltip> -->
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on }">
+                  <v-btn @click="$router.push({ name: 'Login' })" icon large target="_blank" v-on="on">
+                    <v-icon>mdi-code-tags</v-icon>
+                  </v-btn>
+                </template>
+                <span>登录</span>
+              </v-tooltip>
             </v-toolbar>
             <v-card-text>
               <!-- <v-alert type="error" color="error" outlined dense>{{ errInfo }}</v-alert> -->
               <v-form fast-fail @submit.prevent="doLogin" v-model="isValid">
                 <v-text-field label="username" name="username" v-model="username" prepend-icon="mdi-account" type="text"
-                  :rules="[rules.required]"></v-text-field>
+                  :rules="[rules.required]" variant="underlined"></v-text-field>
                 <v-text-field id="password" label="Password" name="password" v-model="password" prepend-icon="mdi-lock"
-                  type="password" :rules="[rules.required, rules.pwdMin]"></v-text-field>
+                  type="password" :rules="[rules.required, rules.pwdMin]" variant="underlined"></v-text-field>
                 <v-text-field id="checkPassword" label="确认密码" name="checkPassword" v-model="checkPassword"
-                  prepend-icon="mdi-lock" type="password" :rules="[rules.required, rules.pwdMin]"></v-text-field>
+                  prepend-icon="mdi-lock" type="password" :rules="[rules.required, rules.pwdMin]" variant="underlined"></v-text-field>
+                <v-row>
+                  <v-col lg="9">
+                    <v-text-field label="code" name="code" v-model="code" prepend-icon="mdi-key" type="text"
+                      :rules="[rules.required]" variant="underlined"></v-text-field>
+                  </v-col>
+                  <v-col><v-btn color="red">申请code</v-btn></v-col>
+                </v-row>
 
-                <v-text-field label="code" name="code" v-model="code" prepend-icon="mdi-key" type="text"
-                  :rules="[rules.required]"></v-text-field>
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <v-btn type="submit" variant="text" :disabled="!isValid">提交</v-btn>
