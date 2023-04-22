@@ -16,7 +16,7 @@ class API {
       replace(/%5B/gi, '[').
       replace(/%5D/gi, ']')
   }
-  private  paramsSerializer(params?: Record<string, string | number | boolean | undefined|object>): string {
+  private paramsSerializer(params?: Record<string, string | number | boolean | undefined | object>): string {
     //{k:v, k2:v2...} => k=v&k2=v2...
     let parts: string[] = [];
     Object.keys(params).forEach((k) => {
@@ -24,11 +24,11 @@ class API {
     })
     return parts.join('&')
   }
-  public async request(urlObject: object, data?: Record<string, string | number | boolean|object>) {
-    let options = Object.assign({},this.baseOptions);
+  public async request(urlObject: object, data?: Record<string, any>) {
+    let options = Object.assign({}, this.baseOptions);
     let url = urlObject["url"]
     if ("headers" in urlObject) {
-      options.headers= <HeadersInit>urlObject["headers"]
+      options.headers = <HeadersInit>urlObject["headers"]
     }
     if (data) {
       if (urlObject["method"] == 'GET' || urlObject["method"] == 'DELETE') {
@@ -37,7 +37,21 @@ class API {
       } else {
         options['body'] = JSON.stringify(data)
       }
+      if (options.headers['Content-Type'] == 'multipart/form-data') {
+        options.headers = undefined
+        const formData = new FormData();
+        Object.keys(data).forEach((k) => {
+          if (data[k] instanceof File) {
+            formData.append(k, data[k])
+
+          } else {
+            formData.append(k, JSON.stringify(data[k]))
+          }
+        })
+        options['body'] = formData
+      }
     }
+
     options["method"] = urlObject["method"]
     const res = await fetch(url, options);
     if (res.status >= 200 && res.status <= 300) {
