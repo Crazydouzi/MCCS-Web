@@ -115,29 +115,9 @@ import { reactive, onMounted, onBeforeUnmount } from 'vue';
 import $API from "@/core/api/fetch"
 import { systemAPI } from "@/core/api/API"
 import SockJS from 'sockjs-client/dist/sockjs.min.js'
-interface MemoryInterface {
-  memTotal: string | undefined;
-  memFree: string | undefined;
-  memUsage: number | undefined;
-  memUse: string | undefined;
-  jvmMemUse: number | undefined;
-}
-interface CPUInfoInterface {
-  cpuUsage: number | undefined;
-  cpuWaitPer: string | undefined;
-  cpuSysUsage: string | undefined;
-  cpuUserUsage: string | undefined;
-}
-interface SystemInfoInterface {
-  HostName: string | undefined;
-  HostAddress: string | undefined;
-  cpuName: string | undefined;
-  cpuCoreCount: string | undefined;
-  systemName: string | undefined;
-  systemType: string | undefined;
-  totalMemory: string | undefined;
-  javaVersion: string | undefined;
-}
+import {MemoryInterface} from '@/core/interface/SystemDataInterface'
+import {CPUInfoInterface} from '@/core/interface/SystemDataInterface'
+import {SystemInfoInterface} from '@/core/interface/SystemDataInterface'
 let memInfo = reactive({ data: <MemoryInterface>{} })
 let cpuInfo = reactive({ data: <CPUInfoInterface>{} })
 let systemInfo = reactive({ data: <SystemInfoInterface>{} })

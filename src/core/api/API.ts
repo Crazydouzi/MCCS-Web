@@ -9,6 +9,9 @@ export const serverAPI:apiType= {
   closeServer: {
     url: APIUrl + "/server/stop", method: "POST"
   },
+  getServerInfo:{
+    url:APIUrl+"/server/getServerInfo",method:"GET"
+  },
   modifyServerConfig: {
     url: APIUrl + "/server/modifyServerOption", method: "POST"
   },
@@ -16,7 +19,7 @@ export const serverAPI:apiType= {
     url: APIUrl + "/server/modifyServerInfo", method: "POST"
   },
   getSetting: {
-    url: APIUrl + "/server/getSettingList", method: "POST"
+    url: APIUrl + "/server/getSetting", method: "GET"
   },
   getStatus: {
     url: APIUrl + "/server/status", method: "GET"
@@ -59,7 +62,6 @@ export const versionAPI: apiType = {
     headers:{
       "Content-Type":"multipart/form-data"
     }
-
   },
 
 }
