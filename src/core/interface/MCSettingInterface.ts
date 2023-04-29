@@ -1,4 +1,5 @@
 interface MCSettingInterface {
+  serverId:undefined,
   javaVersion: string|undefined,
   memMin: string|undefined,
   memMax: string|undefined,

@@ -80,7 +80,7 @@
 
                 <v-list-item>
                   <div class="float-right">
-                    <v-btn color="blue" class="mr-5">保存</v-btn>
+                    <v-btn color="blue" class="mr-5" @click="serverConfigDialog=true">保存</v-btn>
                     <v-btn color="red">清空</v-btn>
                   </div>
                 </v-list-item>
@@ -89,6 +89,8 @@
 
           </v-card-text>
         </v-card>
+        <Confirm v-model:dialog-status="serverConfigDialog" @action-save="saveServerConfig()" />
+
       </v-col>
     </v-row>
 
@@ -147,12 +149,14 @@ import { useRouter } from 'vue-router';
 import MCSettingInterface from '@/core/interface/MCSettingInterface'
 import MCServerInterface from '@/core/interface/MCServerInterface'
 import MCConfigInterface from '@/core/interface/MCConfigInterface'
+import Confirm from '@/components/dialog/Confirm.vue';
 const rules: any = {
   required: (value: any) => value ? true : '此项不能为空',
 }
 const router = useRouter()
 let pageData = reactive({
   MCSetting: <MCSettingInterface>{
+    serverId:undefined,
     javaVersion: "java",
     memMin: "1G",
     memMax: "2G",
@@ -160,6 +164,7 @@ let pageData = reactive({
     jarName: undefined
   },
   MCServer: <MCServerInterface>{
+    id:undefined,
     serverName: undefined,
     version: undefined,
     enable:undefined
@@ -176,6 +181,9 @@ function openDialog(page: string) {
   pageName.value = page
 }
 const id = router.currentRoute.value.params.id[0];
+pageData.MCServer.id=id;
+pageData.MCSetting.serverId=id
+let serverConfigDialog=ref(false)
 function getConfigList() {
   let data = {
     "id": id
@@ -198,6 +206,15 @@ function getServerInfo(){
   }
   $API.request(serverAPI.getServerInfo,data).then(r=>{
     pageData.MCServer=r.data
+  })
+}
+function saveServerConfig(){
+  $API.request(serverAPI.modifyServerConfig,pageData.MCSetting).then(r=>{
+    console.log(r)
+    alert(r.data)
+  }).finally(()=>{
+    getServerInfo()
+    serverConfigDialog.value=false
   })
 }
 onBeforeMount(() => {
