@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 
 export const useAppStore = defineStore('app', {
   state: () => ({
-    drawer:true
+    drawer:false
   }),
   getters:{
     isDrawer:(state)=>state.drawer

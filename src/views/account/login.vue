@@ -7,21 +7,21 @@
             <v-toolbar dark flat>
               <v-toolbar-title>登录</v-toolbar-title>
               <v-spacer></v-spacer>
-              <v-tooltip bottom>
+              <!-- <v-tooltip bottom>
                   <template>
                     <v-btn @click="$router.push({name:'Forget'})" icon large target="_blank" v-on="on">
                       <v-icon>mdi-code-tags</v-icon>
                     </v-btn>
                   </template>
                   <span>找回密码</span>
-                </v-tooltip>
+                </v-tooltip> -->
             </v-toolbar>
             <v-card-text>
               <!-- <v-alert type="error" color="error" outlined dense>{{ errInfo }}</v-alert> -->
               <v-form fast-fail @submit.prevent="doLogin" v-model="isValid">
-                <v-text-field label="username" name="username" v-model="username" prepend-icon="mdi-account" type="text"
+                <v-text-field label="username" name="username" v-model="pageData.data.username" prepend-icon="mdi-account" type="text"
                   :rules="[rules.required]"></v-text-field>
-                <v-text-field id="password" label="Password" name="password" v-model="password" prepend-icon="mdi-lock"
+                <v-text-field id="password" label="Password" name="password" v-model="pageData.data.pwd" prepend-icon="mdi-lock"
                   type="password" :rules="[rules.required, rules.pwdMin]"></v-text-field>
                 <v-card-actions>
                   <v-spacer></v-spacer>
@@ -39,10 +39,12 @@
   </v-container>
 </template>
 <script setup lang="ts">
-import router from '@/router';
+import {useRouter} from 'vue-router';
 import { ref } from 'vue';
-const username = ref('');
-const password = ref('');
+import $API from "@/core/api/fetch"
+import {userAPI} from '@/core/api/API'
+import { reactive } from 'vue';
+const pageData=reactive({data:{username:'',pwd:''}})
 const isValid = ref();
 const rules: any = {
   required: (value: any) => value ? true : '此项不能为空',
@@ -52,8 +54,19 @@ const rules: any = {
       v
     ) ? true : '这不是一个正确的电子邮箱',
 }
+const router=useRouter();
 function doLogin() {
-  console.log(isValid.value)
+  if(isValid.value){
+    console.log(pageData.data)
+    $API.request(userAPI.login,pageData.data).then(r=>{
+      if(r.code!='200'&&r.data!=null&&r.data!=''){
+        sessionStorage.setItem("user-sessionData",r.data)
+        router.push({name:"Home"})
+      }else{
+        alert(r.msg)
+      }
+    })
+  }
 }
 
 </script>

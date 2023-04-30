@@ -4,10 +4,10 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/',
     component: () => import('@/layouts/default/Default.vue'),
-    // beforeEnter: (to: any, from: any, next: any) => {
-    //   if (to.name !== 'Login' && !sessionStorage.getItem('user-sessionToken')) next({ name: 'Login' })
-    //   else next()
-    // },
+    beforeEnter: (to: any, from: any, next: any) => {
+      if (to.name !== 'Login' && !sessionStorage.getItem('user-sessionData')) next({ name: 'Login' })
+      else next()
+    },
     redirect: 'Home',
     children: [
       {
