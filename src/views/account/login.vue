@@ -57,9 +57,8 @@ const rules: any = {
 const router=useRouter();
 function doLogin() {
   if(isValid.value){
-    console.log(pageData.data)
     $API.request(userAPI.login,pageData.data).then(r=>{
-      if(r.code!='200'&&r.data!=null&&r.data!=''){
+      if(r.code=='200'&&r.data!=null&&r.data!=''){
         sessionStorage.setItem("user-sessionData",r.data)
         router.push({name:"Home"})
       }else{

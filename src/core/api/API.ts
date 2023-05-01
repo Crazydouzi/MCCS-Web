@@ -2,15 +2,15 @@ import { apiType } from "./apiLib.dto";
 const APIUrl = "http://localhost:8080/api"
 const WSUrl = "http://localhost:8080/ws"
 
-export const serverAPI:apiType= {
+export const serverAPI: apiType = {
   openServer: {
     url: APIUrl + "/server/start", method: "POST"
   },
   closeServer: {
     url: APIUrl + "/server/stop", method: "POST"
   },
-  getServerInfo:{
-    url:APIUrl+"/server/getServerInfo",method:"GET"
+  getServerInfo: {
+    url: APIUrl + "/server/getServerInfo", method: "GET"
   },
   modifyServerConfig: {
     url: APIUrl + "/server/modifyServerOption", method: "POST"
@@ -36,10 +36,10 @@ export const serverAPI:apiType= {
   setEnablePlugin: {
     url: APIUrl + "/server/enablePlugin", method: "POST"
   },
-  setDisablePlugin:{
+  setDisablePlugin: {
     url: APIUrl + "/server/disablePlugin", method: "POST"
   },
-  deletePlugin:{
+  deletePlugin: {
     url: APIUrl + "/server/deletePlugin", method: "DELETE"
   }
 
@@ -52,15 +52,15 @@ export const versionAPI: apiType = {
   getServerList: {
     url: APIUrl + "/version/list", method: "GET"
   },
-  installRemoteMCServer:{
+  installRemoteMCServer: {
     url: APIUrl + "/version/installRemoteMCServer", method: "POST"
 
   },
-  mcServerUpload:{
+  mcServerUpload: {
     url: APIUrl + "/version/mcServerUpload",
     method: "POST",
-    headers:{
-      "Content-Type":"multipart/form-data"
+    headers: {
+      "Content-Type": "multipart/form-data"
     }
   },
 
@@ -88,6 +88,9 @@ export const systemAPI: apiType = {
 export const userAPI: apiType = {
   login: {
     url: APIUrl + "/user/userLogin",
+    method: 'POST'
+  }, logout: {
+    url: APIUrl + "/user/userLogout",
     method: 'POST'
   },
 } as const;

@@ -4,10 +4,11 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/',
     component: () => import('@/layouts/default/Default.vue'),
-    beforeEnter: (to: any, from: any, next: any) => {
-      if (to.name !== 'Login' && !sessionStorage.getItem('user-sessionData')) next({ name: 'Login' })
-      else next()
-    },
+    // beforeEnter: (to: any, from: any, next: any) => {
+    //   console.log(sessionStorage.getItem('user-sessionData'))
+    //   if (to.name !== 'Login' && !sessionStorage.getItem('user-sessionData')) next({ name: 'Login' })
+    //   else next()
+    // },
     redirect: 'Home',
     children: [
       {
@@ -67,5 +68,10 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
 })
+router.beforeEach((to: any, from: any, next: any) => {
+  // console.log(sessionStorage.getItem('user-sessionData'))
+  if (to.name !== 'Login' && !sessionStorage.getItem('user-sessionData')) next({ name: 'Login' })
+  else next()
+},)
 
 export default router

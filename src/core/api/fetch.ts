@@ -6,6 +6,7 @@ class API {
     },
     keepalive: true, //保证数据连续性
     cache: "no-cache", //请求缓存比较
+    credentials:'include'//发送cookie session等信息
   }
   private encode(val: string): string {
     return encodeURIComponent(val).
