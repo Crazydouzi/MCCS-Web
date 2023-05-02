@@ -56,7 +56,8 @@ class API {
     options["method"] = urlObject["method"]
     const res = await fetch(url, options);
     if (res.status >= 200 && res.status <= 300) {
-      return res.json()
+      const data=res.json()
+      return data
     }
     else {
       throw new Error("[API Request]Network error: " + res.statusText)

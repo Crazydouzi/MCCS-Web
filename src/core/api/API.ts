@@ -68,19 +68,23 @@ export const versionAPI: apiType = {
 export const systemAPI: apiType = {
   getCpuUsage: {
     url: APIUrl + "/system/getCpuUsage",
-    method: 'POST'
+    method: 'GET'
   },
   getSystemInfo: {
     url: APIUrl + "/system/getInfo",
-    method: 'POST'
+    method: 'GET'
   },
   getMemUsage: {
     url: APIUrl + "/system/getMemUsage",
-    method: 'POST'
+    method: 'GET'
   },
   usageInfoWS: {
     url: WSUrl + "/system/usage/",
     method: 'WS'
+  },
+  systemConfig:{
+    url: APIUrl + "/system/getSystemConfig",
+    method: 'GET'
   }
 
 
