@@ -32,28 +32,28 @@
 
             <v-col v-for="(server,index) in serverList" :key="index" >
               <v-card min-width="330px">
-                <v-toolbar density="comfortable" :color="toolbarColor(server.enable)">
-                  <v-toolbar-title>{{ server.serverName }}</v-toolbar-title>
+                <v-toolbar density="comfortable" :color="toolbarColor(server['enable'])">
+                  <v-toolbar-title>{{ server['serverName'] }}</v-toolbar-title>
                   <v-spacer></v-spacer>
                 </v-toolbar>
                 <v-card-actions>
                   <v-list >
-                    <v-list-item>版本：{{ server.version }}</v-list-item>
-                    <v-list-item>服务器状态： <v-chip class="ma-2" :color="statusColor(server.enable)" variant="outlined" label>
-                        {{ server.enable ? "启用" : "停用" }}
+                    <v-list-item>版本：{{ server['version'] }}</v-list-item>
+                    <v-list-item>服务器状态： <v-chip class="ma-2" :color="statusColor(server['enable'])" variant="outlined" label>
+                        {{ server['enable'] ? "可用" : "停用" }}
                       </v-chip>
-                      <v-chip class="ma-2" :color="statusColor(status && server.enable)" variant="outlined" label>
-                        {{ status && server.enable ? "运行中" : "已关闭" }}
+                      <v-chip class="ma-2" :color="statusColor(status && server['enable'])" variant="outlined" label>
+                        {{ status && server['enable'] ? "运行中" : "已关闭" }}
                       </v-chip>
                     </v-list-item>
                     <v-divider />
                     <v-list-item>
                       <!-- <v-row justify-center>
                         <v-col cols="12"> -->
-                          <v-btn @click="$router.push({ name: 'InstanceManage', params: { id: server.id } })" style="padding-left:0px">管理</v-btn>
-                          <v-btn :disabled="!server.enable" @click="$router.push({ name: 'Command' })">终端</v-btn>
-                          <v-btn :disabled="!(server.enable && !status)" @click="openServer()">开启</v-btn>
-                          <v-btn :disabled="!(server.enable && status)" @click="closeServer()">关闭</v-btn>
+                          <v-btn @click="$router.push({ name: 'InstanceManage', params: { id: server['id'] } })" style="padding-left:0px">管理</v-btn>
+                          <v-btn :disabled="!server['enable']" @click="$router.push({ name: 'Command' })">终端</v-btn>
+                          <v-btn :disabled="!(server['enable'] && !status)" @click="openServer()">开启</v-btn>
+                          <v-btn :disabled="!(server['enable'] && status)" @click="closeServer()">关闭</v-btn>
                         <!-- </v-col>
                       </v-row> -->
                     </v-list-item>

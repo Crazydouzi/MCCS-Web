@@ -31,6 +31,9 @@ class API {
     if ("headers" in urlObject) {
       options.headers = <HeadersInit>urlObject["headers"]
     }
+    if("credentials" in urlObject){
+      options.credentials = <RequestCredentials>urlObject["credentials"]
+    }
     if (data) {
       if (urlObject["method"] == 'GET' || urlObject["method"] == 'DELETE') {
         //GET请求将body转为params

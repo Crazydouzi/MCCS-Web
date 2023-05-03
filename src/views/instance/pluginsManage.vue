@@ -35,12 +35,15 @@
       </thead>
       <tbody>
         <tr v-for="item in pluginsList">
-          <td><span v-if="/disable/.test(item)" style="color: red;">[禁用]</span>{{ item.replace(".disabled", "") }}</td>
-          <td class="text-right">
-            <v-btn color="red" variant="outlined" v-if="!/disable/.test(item)" @click="disablePlugin(item)">禁用</v-btn>
-            <v-btn v-else color="green" variant="outlined" @click="enablePlugin(item)">启用</v-btn>
-            <v-btn class="ml-4" @click="deletePlugin(item)">删除</v-btn>
-          </td>
+          <div v-if="typeof (item) == 'string'">
+            <td><span v-if="/disable/.test(item)" style="color: red;">[禁用]</span>{{ item.replace(".disabled", "") }}</td>
+            <td class="text-right">
+              <v-btn color="red" variant="outlined" v-if="!/disable/.test(item)" @click="disablePlugin(item)">禁用</v-btn>
+              <v-btn v-else color="green" variant="outlined" @click="enablePlugin(item)">启用</v-btn>
+              <v-btn class="ml-4" @click="deletePlugin(item)">删除</v-btn>
+            </td>
+          </div>
+
         </tr>
       </tbody>
     </v-table>
@@ -83,12 +86,12 @@ function disablePlugin(plugin: string) {
     pluginInfo.plugin = ""
   })
 }
-function  deletePlugin(plugin: string){
-  let deleteData={
-    id:data.id,
+function deletePlugin(plugin: string) {
+  let deleteData = {
+    id: data.id,
     plugin
   }
-  $API.request(serverAPI.deletePlugin,deleteData).then(r => {
+  $API.request(serverAPI.deletePlugin, deleteData).then(r => {
     console.log(r);
   }).finally(() => {
     getPluginsList()

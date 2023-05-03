@@ -10,7 +10,12 @@
           <v-card-text>
             <v-list>
               <v-list-item>
-                <h3>服务器名：{{pageData.MCServer.serverName  }}</h3>
+                <h3>
+                  服务器名：{{pageData.MCServer.serverName  }}
+                  <v-chip class="ma-2" :color="pageData.MCServer.enable?'green':'red'" variant="outlined" density="comfortable" label>
+                        {{ pageData.MCServer.enable ? "可用" : "停用" }}
+                      </v-chip>
+                </h3>
               </v-list-item>
               <v-list-item>
                 <h3>服务器版本：{{pageData.MCServer.version}}</h3>
@@ -25,14 +30,13 @@
               </v-list-item>
               <v-list-item>
                 <h3 style="display:inline;">修改启用状态：</h3><v-btn color="green"
-                :disabled="(pageData.MCServer.enable)" label>
+                :disabled="(pageData.MCServer.enable)" label @click="changeEnable()">
                   <!-- {{ status && server.enable ? "运行中" : "已关闭" }} -->
                   启用
                 </v-btn>
-                <v-btn color="red" class="ml-3"  :disabled="!(pageData.MCServer.enable)" label>
-                  <!-- {{ status && server.enable ? "运行中" : "已关闭" }} -->
+                <!-- <v-btn color="red" class="ml-3"  :disabled="!(pageData.MCServer.enable)" label>
                   禁用
-                </v-btn>
+                </v-btn> -->
               </v-list-item>
               <v-list-item>
                 <v-list-item-title></v-list-item-title>
@@ -143,7 +147,7 @@
 <script setup lang="ts">
 import { onBeforeMount, reactive, ref } from 'vue';
 import ConfigEdit from '@/components/serverConfig/ConfigEdit.vue';
-import { serverAPI } from '@/core/api/API';
+import { serverAPI, versionAPI } from '@/core/api/API';
 import $API from '@/core/api/fetch';
 import { useRouter } from 'vue-router';
 import MCSettingInterface from '@/core/interface/MCSettingInterface'
@@ -206,6 +210,18 @@ function getServerInfo(){
   }
   $API.request(serverAPI.getServerInfo,data).then(r=>{
     pageData.MCServer=r.data
+  })
+}
+function changeEnable(){
+  let data = {
+    "id": id
+  }
+  $API.request(versionAPI.changeVersion,data).then(r=>{
+    if(r.code=='200'){
+      getServerInfo()
+    }
+    alert(r.msg)
+
   })
 }
 function saveServerConfig(){

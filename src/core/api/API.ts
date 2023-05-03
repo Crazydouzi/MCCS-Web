@@ -63,6 +63,9 @@ export const versionAPI: apiType = {
       "Content-Type": "multipart/form-data"
     }
   },
+  changeVersion:{
+    url: APIUrl + "/version/changeVersion", method: "POST"
+  }
 
 }
 export const systemAPI: apiType = {

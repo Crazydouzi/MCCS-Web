@@ -80,18 +80,19 @@ import $API from '@/core/api/fetch';
 import { versionAPI } from '@/core/api/API';
 import MCServerInterface from '@/core/interface/MCServerInterface';
 import MCSettingInterface from '@/core/interface/MCSettingInterface';
-import { file } from '@babel/types';
 let MCSetting = reactive<MCSettingInterface>({
-  javaVersion: "java",
-  memMin: "1G",
-  memMax: "2G",
-  VMOptions: undefined,
-  jarName: undefined
+javaVersion: "java",
+memMin: "1G",
+memMax: "2G",
+VMOptions: undefined,
+jarName: undefined,
+serverId: undefined
 })
 let MCServer = reactive<MCServerInterface>({
 serverName: undefined,
 version: undefined,
-enable: false
+enable: false,
+id: ''
 })
 let versionInfo = reactive({
   from: "paper",
@@ -108,7 +109,8 @@ let paperRequestInfo = {
   method: 'GET',
   headers: {
     accept: "application/json"
-  }
+  },
+  credentials:'omit'
 }
 let files=ref()
 const rules: any = {
