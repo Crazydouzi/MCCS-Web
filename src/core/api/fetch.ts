@@ -6,7 +6,8 @@ class API {
     },
     keepalive: true, //保证数据连续性
     cache: "no-cache", //请求缓存比较
-    credentials:'include'//发送cookie session等信息
+    credentials:'include',//发送cookie session等信息
+    mode:"cors"
   }
   private encode(val: string): string {
     return encodeURIComponent(val).
@@ -61,6 +62,11 @@ class API {
     if (res.status >= 200 && res.status <= 300) {
       const data=res.json()
       return data
+    }
+    else if (res.status==405) {
+      sessionStorage.clear();
+      location.reload();
+      alert("权限认证失败！请重新登录！")
     }
     else {
       throw new Error("[API Request]Network error: " + res.statusText)

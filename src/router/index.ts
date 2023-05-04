@@ -4,11 +4,6 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/',
     component: () => import('@/layouts/default/Default.vue'),
-    // beforeEnter: (to: any, from: any, next: any) => {
-    //   console.log(sessionStorage.getItem('user-sessionData'))
-    //   if (to.name !== 'Login' && !sessionStorage.getItem('user-sessionData')) next({ name: 'Login' })
-    //   else next()
-    // },
     redirect: 'Home',
     children: [
       {
@@ -70,7 +65,7 @@ const router = createRouter({
 })
 router.beforeEach((to: any, from: any, next: any) => {
   // console.log(sessionStorage.getItem('user-sessionData'))
-  if (to.name !== 'Login' && !sessionStorage.getItem('user-sessionData')) next({ name: 'Login' })
+  if (to.name !== 'Login' && to.name !== 'Forget' &&!sessionStorage.getItem('user-sessionData')) next({ name: 'Login' })
   else next()
 },)
 

@@ -58,7 +58,6 @@
           <v-row>
             <v-col>
               <v-spacer></v-spacer>
-              {{  isValid}}
               <v-btn color="blue" class="float-right" @click="save()">保存</v-btn>
             </v-col>
             <v-col>
@@ -173,6 +172,8 @@ async function save() {
       }).finally(()=>{
         emit("getServerList")
       })
+      alert("实例部署中。。。。操作将在一段时间后完成。。")
+      close()
     })
   }
   }

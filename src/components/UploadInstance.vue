@@ -74,16 +74,18 @@ import MCServerInterface from '@/core/interface/MCServerInterface';
 import MCSettingInterface from '@/core/interface/MCSettingInterface';
 import { versionAPI } from '@/core/api/API';
 let MCSetting = reactive<MCSettingInterface>({
-  javaVersion: "java",
-  memMin: "1G",
-  memMax: "2G",
-  VMOptions: undefined,
-  jarName: undefined
+javaVersion: "java",
+memMin: "1G",
+memMax: "2G",
+VMOptions: undefined,
+jarName: undefined,
+serverId: undefined
 })
 let MCServer = reactive<MCServerInterface>({
-  serverName: undefined,
-  version: undefined,
-  enable: undefined
+serverName: undefined,
+version: undefined,
+enable: undefined,
+id: ''
 })
 let files = ref()
 let autoScan = ref({ title: '自动扫描', value: true })

@@ -17,7 +17,9 @@
             </p>
           </v-col>
           <v-col cols="12">
-            <v-btn x-large class="mx-5" variant="outlined" color="green">上传插件</v-btn>
+            <v-btn x-large class="mx-5" variant="outlined" color="green" @click="fileInput.click()">上传插件</v-btn>
+            <v-file-input label="上传插件" class="mx-5" required :chips="true" v-model="file" ref="fileInput" accept=".jar"
+              style="display: none;" @update:model-value="uploadPlugin()"></v-file-input>
           </v-col>
         </v-row>
       </v-card-text>
@@ -35,14 +37,12 @@
       </thead>
       <tbody>
         <tr v-for="item in pluginsList">
-          <div v-if="typeof (item) == 'string'">
-            <td><span v-if="/disable/.test(item)" style="color: red;">[禁用]</span>{{ item.replace(".disabled", "") }}</td>
-            <td class="text-right">
-              <v-btn color="red" variant="outlined" v-if="!/disable/.test(item)" @click="disablePlugin(item)">禁用</v-btn>
-              <v-btn v-else color="green" variant="outlined" @click="enablePlugin(item)">启用</v-btn>
-              <v-btn class="ml-4" @click="deletePlugin(item)">删除</v-btn>
-            </td>
-          </div>
+          <td><span v-if="/disable/.test(item)" style="color: red;">[禁用]</span>{{ item.replace(".disabled", "") }}</td>
+          <td class="text-right">
+            <v-btn color="red" variant="outlined" v-if="!/disable/.test(item)" @click="disablePlugin(item)">禁用</v-btn>
+            <v-btn v-else color="green" variant="outlined" @click="enablePlugin(item)">启用</v-btn>
+            <v-btn class="ml-4" @click="deletePlugin(item)">删除</v-btn>
+          </td>
 
         </tr>
       </tbody>
@@ -60,9 +60,11 @@ let data = {
 }
 let pluginInfo = {
   "MCServer": { id: data.id },
-  "plugin": ""
+  "plugin": null
 }
-let pluginsList = ref()
+let file = ref()
+let fileInput = ref()
+let pluginsList = ref<Array<string>>()
 function getPluginsList() {
   $API.request(serverAPI.getPluginList, data).then(r => {
     pluginsList.value = r.data
@@ -74,7 +76,7 @@ function enablePlugin(plugin: string) {
     console.log(r)
   }).finally(() => {
     getPluginsList()
-    pluginInfo.plugin = ""
+    pluginInfo.plugin = null
   })
 }
 function disablePlugin(plugin: string) {
@@ -83,20 +85,35 @@ function disablePlugin(plugin: string) {
     console.log(r);
   }).finally(() => {
     getPluginsList()
-    pluginInfo.plugin = ""
+    pluginInfo.plugin = null
   })
 }
 function deletePlugin(plugin: string) {
-  let deleteData = {
-    id: data.id,
-    plugin
+  if (confirm("是否删除插件：" + plugin + "?")) {
+    let deleteData = {
+      id: data.id,
+      plugin
+    }
+    $API.request(serverAPI.deletePlugin, deleteData).then(r => {
+      console.log(r);
+    }).finally(() => {
+      getPluginsList()
+      pluginInfo.plugin = null
+    })
   }
-  $API.request(serverAPI.deletePlugin, deleteData).then(r => {
-    console.log(r);
-  }).finally(() => {
-    getPluginsList()
-    pluginInfo.plugin = ""
-  })
+
+}
+function uploadPlugin() {
+  if (confirm("是否立即上传" + file.value[0]['name'] + "?")) {
+    pluginInfo.plugin = file.value[0]
+    $API.request(serverAPI.uploadPlugin, pluginInfo).then(r => {
+      alert(r.msg)
+    }).finally(() => {
+      getPluginsList()
+      pluginInfo.plugin = null
+    })
+  }
+
 }
 onMounted(() => {
   getPluginsList()

@@ -28,10 +28,9 @@
     <v-card class="mt-5" color="#f3f3f3" flat>
       <v-row class="mx-auto">
         <v-col cols="12">
-          <v-row justify="center" >
-
-            <v-col v-for="(server,index) in serverList" :key="index" >
-              <v-card min-width="330px">
+          <v-row justify="start" >
+            <v-col v-for="(server,index) in serverList" :key="index" md="4" sm="12">
+              <v-card>
                 <v-toolbar density="comfortable" :color="toolbarColor(server['enable'])">
                   <v-toolbar-title>{{ server['serverName'] }}</v-toolbar-title>
                   <v-spacer></v-spacer>

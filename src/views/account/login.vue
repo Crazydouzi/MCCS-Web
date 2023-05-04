@@ -7,22 +7,25 @@
             <v-toolbar dark flat>
               <v-toolbar-title>登录</v-toolbar-title>
               <v-spacer></v-spacer>
-              <!-- <v-tooltip bottom>
-                  <template>
-                    <v-btn @click="$router.push({name:'Forget'})" icon large target="_blank" v-on="on">
-                      <v-icon>mdi-code-tags</v-icon>
-                    </v-btn>
-                  </template>
-                  <span>找回密码</span>
-                </v-tooltip> -->
+              <v-tooltip location="top" >
+                <template v-slot:activator="{ props }">
+                  <v-btn icon v-bind="props"  @click="router.push({name:'Forget'})">
+                    <v-icon>
+                      mdi-lock-reset
+                    </v-icon>
+                  </v-btn>
+                </template>
+                <span>忘记密码</span>
+              </v-tooltip>
+
             </v-toolbar>
             <v-card-text>
               <!-- <v-alert type="error" color="error" outlined dense>{{ errInfo }}</v-alert> -->
               <v-form fast-fail @submit.prevent="doLogin" v-model="isValid">
-                <v-text-field label="username" name="username" v-model="pageData.data.username" prepend-icon="mdi-account" type="text"
-                  :rules="[rules.required]"></v-text-field>
-                <v-text-field id="password" label="Password" name="password" v-model="pageData.data.pwd" prepend-icon="mdi-lock"
-                  type="password" :rules="[rules.required, rules.pwdMin]"></v-text-field>
+                <v-text-field label="username" name="username" v-model="pageData.data.username" prepend-icon="mdi-account"
+                  type="text" :rules="[rules.required]"></v-text-field>
+                <v-text-field id="password" label="Password" name="password" v-model="pageData.data.pwd"
+                  prepend-icon="mdi-lock" type="password" :rules="[rules.required, rules.pwdMin]"></v-text-field>
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <v-btn type="submit" variant="text" :disabled="!isValid">提交</v-btn>
@@ -39,12 +42,12 @@
   </v-container>
 </template>
 <script setup lang="ts">
-import {useRouter} from 'vue-router';
+import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 import $API from "@/core/api/fetch"
-import {userAPI} from '@/core/api/API'
+import { userAPI } from '@/core/api/API'
 import { reactive } from 'vue';
-const pageData=reactive({data:{username:'',pwd:''}})
+const pageData = reactive({ data: { username: '', pwd: '' } })
 const isValid = ref();
 const rules: any = {
   required: (value: any) => value ? true : '此项不能为空',
@@ -54,14 +57,14 @@ const rules: any = {
       v
     ) ? true : '这不是一个正确的电子邮箱',
 }
-const router=useRouter();
+const router = useRouter();
 function doLogin() {
-  if(isValid.value){
-    $API.request(userAPI.login,pageData.data).then(r=>{
-      if(r.code=='200'&&r.data!=null&&r.data!=''){
-        sessionStorage.setItem("user-sessionData",r.data)
-        router.push({name:"Home"})
-      }else{
+  if (isValid.value) {
+    $API.request(userAPI.login, pageData.data).then(r => {
+      if (r.code == '200' && r.data != null && r.data != '') {
+        sessionStorage.setItem("user-sessionData", r.data)
+        router.push({ name: "Home" })
+      } else {
         alert(r.msg)
       }
     })

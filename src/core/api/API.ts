@@ -41,7 +41,14 @@ export const serverAPI: apiType = {
   },
   deletePlugin: {
     url: APIUrl + "/server/deletePlugin", method: "DELETE"
-  }
+  },
+  uploadPlugin: {
+    url: APIUrl + "/server/uploadPlugin", method: "POST",
+    headers: {
+      "Content-Type": "multipart/form-data"
+    }
+  },
+
 
 } as const;
 export const versionAPI: apiType = {
@@ -63,7 +70,7 @@ export const versionAPI: apiType = {
       "Content-Type": "multipart/form-data"
     }
   },
-  changeVersion:{
+  changeVersion: {
     url: APIUrl + "/version/changeVersion", method: "POST"
   }
 
@@ -85,7 +92,7 @@ export const systemAPI: apiType = {
     url: WSUrl + "/system/usage/",
     method: 'WS'
   },
-  systemConfig:{
+  systemConfig: {
     url: APIUrl + "/system/getSystemConfig",
     method: 'GET'
   }
@@ -96,9 +103,18 @@ export const userAPI: apiType = {
   login: {
     url: APIUrl + "/user/userLogin",
     method: 'POST'
-  }, logout: {
+  },
+  logout: {
     url: APIUrl + "/user/userLogout",
     method: 'POST'
   },
+  getCode: {
+    url: APIUrl + "/user/getCode",
+    method: 'GET'
+  },
+  forget: {
+    url: APIUrl + "/user/forget",
+    method: 'POST'
+  }
 } as const;
 
