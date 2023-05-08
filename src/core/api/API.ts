@@ -72,6 +72,9 @@ export const versionAPI: apiType = {
   },
   changeVersion: {
     url: APIUrl + "/version/changeVersion", method: "POST"
+  },
+  deleteServer:{
+    url: APIUrl + "/version/uninstallMCServer", method: "DELETE"
   }
 
 }
@@ -114,6 +117,10 @@ export const userAPI: apiType = {
   },
   forget: {
     url: APIUrl + "/user/forget",
+    method: 'POST'
+  },
+  changePwd:{
+    url: APIUrl + "/user/resetPwd",
     method: 'POST'
   }
 } as const;

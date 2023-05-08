@@ -156,6 +156,7 @@ async function save() {
       }).catch(r=>{
         alert(r.msg)
       }).finally(()=>{
+        close()
         emit("getServerList")
       })
     } else {

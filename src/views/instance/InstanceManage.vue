@@ -40,10 +40,12 @@
               </v-list-item>
               <v-list-item>
                 <v-list-item-title></v-list-item-title>
-                <h3 style="display:inline;">删除服务器：</h3><v-btn color="red" >
+                <h3 style="display:inline;">删除服务器：</h3>
+                <v-btn color="red" @click="deleteConfigDialog=true">
                   <!-- {{ status && server.enable ? "运行中" : "已关闭" }} -->
                   删除
                 </v-btn>
+                <Confirm v-model:dialog-status="deleteConfigDialog" @action-save="deleteServer()" />
               </v-list-item>
             </v-list>
           </v-card-text>
@@ -188,6 +190,7 @@ const id = router.currentRoute.value.params.id[0];
 pageData.MCServer.id=id;
 pageData.MCSetting.serverId=id
 let serverConfigDialog=ref(false)
+let deleteConfigDialog=ref(false)
 function getConfigList() {
   let data = {
     "id": id
@@ -209,6 +212,7 @@ function getServerInfo(){
     "id": id
   }
   $API.request(serverAPI.getServerInfo,data).then(r=>{
+    if(Object.keys(r.data).length === 0){router.push({name:"Server"})}
     pageData.MCServer=r.data
   })
 }
@@ -232,6 +236,18 @@ function saveServerConfig(){
     getServerInfo()
     serverConfigDialog.value=false
   })
+}
+function deleteServer(){
+  let data = {
+    "id": id
+  }
+  $API.request(versionAPI.deleteServer,data).then(r=>{
+    alert(r.msg)
+    if(r.code==200){
+      router.push({name:"Server"})
+    }
+  })
+
 }
 onBeforeMount(() => {
   getConfigList()

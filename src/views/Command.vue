@@ -86,6 +86,12 @@ function openSock() {
   sock.onmessage = (d: { data: any; }) => {
     cmdValue.value = cmdValue.value + "\n[Server>]:" + d.data;
   };
+  sock.onclose=()=>{
+    alert("Socket关闭")
+      console.log('close');
+      socketStatus.value = false
+      status.value=false
+  }
 }
 function closeSock() {
   if (sock != null) {

@@ -47,6 +47,8 @@ import { ref } from 'vue';
 import $API from "@/core/api/fetch"
 import { userAPI } from '@/core/api/API'
 import { reactive } from 'vue';
+import { useAppStore } from '@/store/app';
+const store = useAppStore();
 const pageData = reactive({ data: { username: '', pwd: '' } })
 const isValid = ref();
 const rules: any = {
@@ -62,7 +64,8 @@ function doLogin() {
   if (isValid.value) {
     $API.request(userAPI.login, pageData.data).then(r => {
       if (r.code == '200' && r.data != null && r.data != '') {
-        sessionStorage.setItem("user-sessionData", r.data)
+        sessionStorage.setItem("user-sessionData", JSON.stringify(r.data))
+        store.drawer=true
         router.push({ name: "Home" })
       } else {
         alert(r.msg)
